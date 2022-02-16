@@ -107,19 +107,12 @@ def get_x_y_symmetric_poly(coeff):
 
     return get_general_quartic_poly(new_coeff)
 
-def is_singular_quartic(poly):
-    c = pexpect.spawnu('/Applications/Magma/magma')
-    c.expect('>')
+def is_singular_quartic_with_magma_process(poly, c):
     commands = [
-        'q1<t>:=PolynomialRing(RationalField());',
-        'z4<x,y,z,w>:=PolynomialRing(IntegerRing(),4);',
         'f:='+poly+';',
-        'p:=2;',
-        'P3 := ProjectiveSpace(GF(p), 3);',
         'S := Scheme(P3, f);',
         'IsSingular(S);'
     ]
-
     for comm in commands:
         c.sendline(comm)
         c.expect(';\r\n')
@@ -133,20 +126,32 @@ def is_singular_quartic(poly):
     else:
         raise ValueError('Smoothness of this quartic cannot be determined: %s' % (poly,))
 
-def check_all_polys(start_from_id=0):
+def check_all_polys_using_same_magma_process(start_from_id=0):
+    c = pexpect.spawnu('/Applications/Magma/magma')
+    c.expect('>')
+    commands = [
+        'q1<t>:=PolynomialRing(RationalField());',
+        'z4<x,y,z,w>:=PolynomialRing(IntegerRing(),4);',
+        'p:=2;',
+        'P3 := ProjectiveSpace(GF(p), 3);'
+    ]
+
+    for comm in commands:
+        c.sendline(comm)
+        c.expect(';\r\n')
+
     coeff_generator = itertools.product([0, 1], repeat=22)
     for id, coeff in enumerate(coeff_generator):
         if id<start_from_id:
             continue
         poly = get_x_y_symmetric_poly(coeff)
         try:
-            result = is_singular_quartic(poly)
+            result = is_singular_quartic_with_magma_process(poly, c)
         except TIMEOUT:
             result = 'timeout'
         except ValueError:
             result = 'error'
         log.info('ID: %s. Result: %s. Coefficients (short form): %s.' % (id, result, coeff,))
 
-
 if __name__ == '__main__':
-    check_all_polys(start_from_id=1)
+    check_all_polys_using_same_magma_process(start_from_id=1)
