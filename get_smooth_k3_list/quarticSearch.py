@@ -127,7 +127,8 @@ def is_singular_quartic_with_magma_process(poly, c):
         raise ValueError('Smoothness of this quartic cannot be determined: %s' % (poly,))
 
 def check_all_polys_using_same_magma_process(start_from_id=0):
-    c = pexpect.spawnu('/Applications/Magma/magma')
+    path_to_magma_executable = '/Applications/Magma/magma'
+    c = pexpect.spawnu(path_to_magma_executable)
     c.expect('>')
     commands = [
         'q1<t>:=PolynomialRing(RationalField());',
