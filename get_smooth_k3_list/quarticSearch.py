@@ -16,6 +16,8 @@ log = get_logger(__name__, with_logfile=True, level=logging.DEBUG)
 
 
 def get_general_quartic_poly(coeff):
+    '''Given a list of length 35, this returns a quartic polynomial in variables x, y, z, w as a
+    string whose coefficients are given by the list entries.'''
     assert len(coeff)==35
     poly = str(coeff[0])+'*x^4+'+\
            str(coeff[1])+'*x^3*y+'+\
@@ -54,15 +56,11 @@ def get_general_quartic_poly(coeff):
            str(coeff[34])+'*w^4'
     return poly
 
-def get_demo_poly():
-    one_indices = set([0,2,4,6,7,8,10,14,15,17,22,23,24,25,27,30,33])
-    coeff = [0 for _ in range(35)]
-    for k in range(35):
-        if k in one_indices:
-            coeff[k] = 1
-    return get_general_quartic_poly(coeff)
-
 def get_x_y_symmetric_poly(coeff):
+    '''Given a list of length 22, this returns a quartic polynomial in variables x, y, z, w which
+    is invariant under swapping of x and y. There are 22 coefficients that can be chosen independently,
+    and those coefficiens are given by the list entries. The other coefficients are automatically
+    determined by the condition that the polynomial be invariant under swapping of x and y.'''
     assert len(coeff)==22
     new_coeff = [0 for _ in range(35)]
 
@@ -107,7 +105,14 @@ def get_x_y_symmetric_poly(coeff):
 
     return get_general_quartic_poly(new_coeff)
 
-def is_singular_quartic_with_magma_process(poly, c):
+def is_singular_quartic_with_magma_process(poly: str, c):
+    """Tests if a given quartic is singular.
+
+    :param poly: A string representing a polynomial in variables x, y, z, w with integer coefficients.
+    :param c: A pexpect.spawnu object containing a Magma process that has set up projective space
+    and a polynomial ring, as done in the method check_all_polys_using_same_magma_process.
+    :return: True if the quartic is singular, False if it is smooth
+    """
     commands = [
         'f:='+poly+';',
         'S := Scheme(P3, f);',
@@ -127,6 +132,12 @@ def is_singular_quartic_with_magma_process(poly, c):
         raise ValueError('Smoothness of this quartic cannot be determined: %s' % (poly,))
 
 def check_all_polys_using_same_magma_process(start_from_id=0):
+    """Checks all quartic polynomials with coefficients in Z_2 which are invariant under swapping
+    x and y as to whether they define a smooth surface. There are 2^(22)=4194304 such polynomials.
+    Results are written to a .log file.
+
+    :param start_from_id:
+    """
     path_to_magma_executable = '/Applications/Magma/magma'
     c = pexpect.spawnu(path_to_magma_executable)
     c.expect('>')
@@ -155,4 +166,4 @@ def check_all_polys_using_same_magma_process(start_from_id=0):
         log.info('ID: %s. Result: %s. Coefficients (short form): %s.' % (id, result, coeff,))
 
 if __name__ == '__main__':
-    check_all_polys_using_same_magma_process(start_from_id=1)
+    check_all_polys_using_same_magma_process(start_from_id=5089)
