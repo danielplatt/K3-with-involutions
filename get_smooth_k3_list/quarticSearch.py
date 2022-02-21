@@ -166,4 +166,4 @@ def check_all_polys_using_same_magma_process(start_from_id=0):
         log.info('ID: %s. Result: %s. Coefficients (short form): %s.' % (id, result, coeff,))
 
 if __name__ == '__main__':
-    check_all_polys_using_same_magma_process(start_from_id=5089)
+    check_all_polys_using_same_magma_process(start_from_id=751767)
