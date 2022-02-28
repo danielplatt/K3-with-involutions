@@ -60,7 +60,9 @@ LB := RiemannRochBasis(9*DivH-5*DivD);
 // map to each other under the involution:
 // [1,-1,-1,1] <--> [0,0,-1,1]
 // [1,-1,0,1] <--> [1,0,-1,1]
-// This can be checked with the function InvK3
+// This can be checked by slightly adjusting the
+// code of Ronald and taking this points as P,
+// instead of the generic point.
 // Note that all points are on the affine where w
 // doesnt vanish.
 
