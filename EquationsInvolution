@@ -9,11 +9,11 @@
 // the divisor -H+5C where C denotes the special curve 
 // of genus 2 and degree 5 on this surface
 
-Q := RationalField();    
+Q := RationalField();
 P1tP1<x0,x1,y0,y1> := ProductProjectiveSpace(Q,[1,1]);
 
 // Curve of type (2,3), genus=2, degree=5
-f := x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3; 
+f := x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
 C := Scheme(P1tP1,f);
 // Embedding in P3
 Cim<x,y,z,w> := SegreEmbedding(C);
@@ -23,7 +23,7 @@ qc := DefiningEquations(Cim);
 g := -x1^2*y0 + x0^2*y1;
 D := Scheme(P1tP1,g);
 // Twisted cubic curve
-Dim<x,y,z,w> := SegreEmbedding(D);    
+Dim<x,y,z,w> := SegreEmbedding(D);
 qd := DefiningEquations(Dim);
 
 // Union of those curves gives an equation of a 
