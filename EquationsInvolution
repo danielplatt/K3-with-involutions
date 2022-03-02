@@ -42,7 +42,10 @@ ConX := Scheme(X,qc);
 DonX := Scheme(X,qd);
 
 // Divisors 
-DivC := Divisor(X,ConX);
+DivC := Divisor(X,ConX); 
+// It seems like the divisor C is not working 
+// in magma, which is odd. 
+// We will work around this by using D.
 DivD := Divisor(X,DonX);
 DivH := Divisor(X,w);
 
