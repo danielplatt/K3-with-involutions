@@ -156,10 +156,14 @@ pires := map < X -> Y | Func2 >;
 IsInvertible(pires); 
 // calculates inverse of pi, takes ~2min
 
-Z := Scheme(Y,ww) @@ pires ;
+// Z := Scheme(Y,ww) @@ pires ;
 // Branch locus of double cover
-2*Equations(Z)[1]; 
+// 2*Equations(Z)[1]; 
 // equation for the Branch locus on X in P3
+// I think something goes wrong because the 
+// following gives a different result:
+Z := Inverse(pires)(Scheme(Y,ww));
+// This gives something very ugly...
 
 // Probably, we can do better then this
 // but for now it works..
