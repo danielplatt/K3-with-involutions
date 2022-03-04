@@ -92,9 +92,7 @@ assert [ Evaluate( Inv[i], [1,0,-1,1] ) :
   i in [1..4]] eq [1,-1,0,1];
 // Hence, the image indeed gives X and so the 
 // polynomials of Inv give the involution
-
-// We scale with 32 to get rid of the fractions:
-[32*Inv[i] : i in [1..4]]; 
+[Inv[i] : i in [1..4]]; 
 
 
 // Now we will calculate different models.
