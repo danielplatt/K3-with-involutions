@@ -49,8 +49,6 @@ DivC := Divisor(X,ConX);
 DivD := Divisor(X,DonX);
 DivH := Divisor(X,w);
 
-F<x,y,z,w>:=FunctionField(Q,4);
-
 // Basis of Riemann-Roch space of 9H-5D
 LB := RiemannRochBasis(9*DivH-5*DivD);
 // N.b. takes some time to calculate: ~1min 
@@ -80,7 +78,7 @@ M:=Transpose(MR!Pts);
 N:=Transpose(MR!ev);
 LinTr:=M*N^(-1);
 
-Inv:=[&+[w^9*LinTr[i,j]*F!LB[j] : j in [1..4]] : 
+Inv:=[&+[LinTr[i,j]*LB[j] : j in [1..4]] : 
   i in [1..4]];
 assert [ Evaluate( Inv[i], [1,-1,-1,1]) : 
   i in [1..4]] eq [0,0,-1,1];
