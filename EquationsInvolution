@@ -165,16 +165,9 @@ LHD := RiemannRochBasis(DivH+DivD);
 // equations for map to P5
 P5<x0,x1,x2,x3,x4,x5> := ProjectiveSpace(Q,5); 
 chi := map < X -> P5 | LHD >; 
-// embedding of X in P5pu
+// embedding of X in P5
 
 IsIrreducible(X); // needs to be runned to find
 X8p := Image(chi); // the image of chi
 X8 := Scheme(P5,[Equations(X8p)[i] : i in [4,5,6]]);
-X8 eq X8p; // false?
-// but:
-CP5 := CoordinateRing(P5);
-I := ideal< CP5 | Equations(X8p)>;
-for i in [1,2,3] do
-    CP5!Equations(X8p)[i] in I;
-end for; // gives true...
-
+X8 eq X8p; 
