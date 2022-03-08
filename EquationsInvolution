@@ -138,25 +138,27 @@ f2 := (f1+(Func[1]^3+Func[1]^2*Func[2]-Func[2]^3)/2)*2;
 Func2 := Append(Func,f2);
 pi := map < X -> WPS | Func2 >; 
 // embedding of X in P(1,1,1,3) 
-Y := Image(pi); 
-Y; // image w^2=f(x,y,z) with f of degree 6
+X2 := Image(pi); 
+X2; // model in P(1,1,1,3),
+// equation is given by w^2=f(x,y,z) with f of degree 6
 
-pires := map < X -> Y | Func2 >; 
+pires := map < X -> X2 | Func2 >; 
 // restricted pi to image 
 IsInvertible(pires); 
-// calculates inverse of pi, takes ~1min
+// calculates inverse of pi, takes ~2mpmin
 
-Z0 := Scheme(Y,ww) @@ pires ;
+Z0 := Scheme(X2,ww) @@ pires ;
 // Branch locus of double cover
 // 2*Equations(Z)[1]; 
 // equation for the Branch locus on X in P3
 // I think something goes wrong because the 
 // following gives a different result:
-Z1 := Inverse(pires)(Scheme(Y,ww));
+Z1 := Inverse(pires)(Scheme(X2,ww));
 // This gives something very ugly...
 // Better to pullback f(x,y,z) along phi
-Z2p := Scheme(P2,Evaluate(Equation(Y),[s,t,u,0]));
-Z2 := Z2p @@ phi;
+Z2p := Scheme(P2,Evaluate(Equation(X2),[s,t,u,0]));
+
+Z2 := Z2p @@ phi; // branched curve in P3;
 
 
 //Model in P5
@@ -171,3 +173,7 @@ IsIrreducible(X); // needs to be runned to find
 X8p := Image(chi); // the image of chi
 X8 := Scheme(P5,[Equations(X8p)[i] : i in [4,5,6]]);
 X8 eq X8p; 
+X8; // model in P5
+
+reschi := map < X -> X8 | LHD >;
+IsInvertible(reschi);
