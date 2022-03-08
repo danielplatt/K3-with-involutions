@@ -169,7 +169,7 @@ chi := map < X -> P5 | LHD >;
 
 IsIrreducible(X); // needs to be runned to find
 X8p := Image(chi); // the image of chi
-X8 := Scheme(P5,[Equations(X8p)[i] : i in [4,5,x6]]);
+X8 := Scheme(P5,[Equations(X8p)[i] : i in [4,5,6]]);
 X8 eq X8p; // false?
 // but:
 CP5 := CoordinateRing(P5);
