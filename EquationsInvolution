@@ -88,6 +88,7 @@ N1 := TranslationOfSimplex(P3,ev);
 i1 := Expand(preinv*N1^(-1)*M1);
 DefiningPolynomials(i1);
 
+// Double check of this is correct!
 
 // Now we will calculate different models.
 // C+D is linearly equivalent to 2H, so
