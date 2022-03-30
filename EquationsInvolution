@@ -100,10 +100,6 @@ L2HmD := RiemannRochBasis(2*DivH-DivD);
 P2<s,t,u> := ProjectiveSpace(Q,2);
 phi := map < X -> P2 | L2HmD >; // double cover
 
-// Branch locus is given by Z:
-Zp := Scheme(P2,Evaluate(Equation(X2),[s,t,u,0]));
-Z := Zp @@ phi; // branched curve in P3;
-
 // -----------------------------------------------
 
 L6Hm3D := RiemannRochBasis(6*DivH-3*DivD); 
@@ -178,13 +174,20 @@ piinv := Expand(prepiinv*N2^(-1)*M2);
 // the image takes to much time.
 
 // Now the involution is given by composing the
-// three maps pi, inv in X2 and the inverse piinv:
+// three maps pi, iX2 and the inverse piinv:
 
 i2 := pires*iX2*piinv;
 i1 eq i2;
 // gives true
 // so this gives the involution as a composition
 // of much easier maps.
+
+// ----------------------------------------------
+
+// Branch locus is given by Z:
+Zp := Scheme(P2,Evaluate(Equation(X2)
+        ,[s,t,u,0]));
+Z := Zp @@ phi; // branched curve in P3;
 
 // ----------------------------------------------
 
