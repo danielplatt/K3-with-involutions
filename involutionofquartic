@@ -1,0 +1,52 @@
+// This file contains a function, which can be used
+// to check where a point P is going under the involution
+// Of course it is better to use the other file, but 
+// to construct the map there, we had to use this fucntion
+
+function InvK3(f,P)
+    Q:=RationalField();    
+    P1tP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
+    g:= -x1^2*y0 + x0^2*y1;
+    D:=Scheme(P1tP1,g);
+    Dim<x,y,z,w>:=SegreEmbedding(D);    
+    q:=DefiningEquations(Dim);
+    
+    C:=Scheme(P1tP1,f);
+    CD:=Union(C,D);
+    CDim<x,y,z,w>:=SegreEmbedding(CD);
+    h:=DefiningEquations(CDim)[2];
+    
+    R<x,y,z,w>:=PolynomialRing(Q,4);
+    P3:=ProjectiveSpace(R);
+    X:=Scheme(P3,h); 
+    if P in X then
+        M:=Matrix(Q,#q,1,
+            [Evaluate(q[i],P):i in [1..#q]]);
+        kerM:=Basis(Kernel(M));
+        if Dimension(Kernel(M)) ne 2 then 
+            return("P? kerM not 2");
+        end if;
+        p1:=&+[R!kerM[1,i]*R!q[i]: i in [1..3]];
+        p2:=&+[R!kerM[2,i]*R!q[i]: i in [1..3]];
+        Y1:=Scheme(P3,p1);
+        Y2:=Scheme(P3,p2);
+        I1:=Intersection(Y1,X);
+        I2:=Intersection(Y2,X);
+        Dd:=Scheme(P3,q);
+        C1:=Difference(I1,Dd);
+        C2:=Difference(I2,Dd);    
+        IP:=Intersection(C1,C2);
+        if Dimension(IP) eq 0 then
+            RP:=RationalPoints(IP);
+            if #RP eq 2 then
+                if RP[1] eq RP!P then 
+                    return(RP[2]);
+                end if;
+                return(RP[1]);
+            end if;
+            return("P? #RP not 2");
+        end if;
+        return("Something went wrong");
+    end if;
+    return("point not on X");
+end function;
