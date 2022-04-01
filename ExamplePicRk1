@@ -1,0 +1,27 @@
+// This code shows that the example in section 3 of our paper
+// has indeed Picard rank 1.
+// These computations take some time ~15 minutes
+
+R<x,y,z>:=PolynomialRing(Integers(),3); 
+f:=7*x^6+x^5*y-x^4*y^2-9*x^3*y^3+2*x^2*y^4-6*x*y^5+7*y^6+3*x^5*z
+    +7*x^4*y*z+6*x^3*y^2*z-4*x^2*y^3*z-4*x*y^4*z+9*y^5*z+2*x^4*z^2
+    -4*x^3*y*z^2-6*x^2*y^2*z^2-7*x*y^3*z^2+5*x^2*y*z^3+5*x*y^2*z^3
+    -8*y^3*z^3-6*x^2*z^4+5*x*y*z^4+8*y^2*z^4+7*x*z^5-2*y*z^5+z^6;
+
+R5 := PolynomialRing(GF(5),3);
+f5 := R5!f;
+W5 := WeilPolynomialOfDegree2K3Surface(f5);
+WeilPolynomialToRankBound(W5,5); // rank is 2
+ArtinTateFormula(W5, 5, 1);
+
+R13 := PolynomialRing(GF(13),3);
+f13 := R13!f;
+W13 := WeilPolynomialOfDegree2K3Surface(f13);
+WeilPolynomialToRankBound(W13,13); // rank is 2
+ArtinTateFormula(W13, 13, 1); 
+
+// Because the values of the ArtinTateFormule
+// do not not differ a square, we deduce that 
+// the Picard rank is 1.
+
+
