@@ -1,39 +1,53 @@
+// In this file code is found to find a quartic K3 of 
+// Picard rank 2. We first define three functions, which 
+// be used in the final code.
+// The final code that can be runned after defining these 
+// functions is at the bottom.
 
+// ------------------------------------------------------
 
-// Calculating the possible Picard numbers of a
-// the surface defined over F2 by a quartic polynomial f.
+// The function PicNumberMod2(f) calculates an upperbound
+// for the Picard number of the surface defined over F2 
+// by a quartic polynomial h. 
 // This function takes about 50 seconds to run.
 
-function PicNumberMod2(f)  
+function PicNumberMod2(h)  
   P3:=ProjectiveSpace(GF(2),3);
-  S:=Scheme(P3,f); // surface
+  S:=Scheme(P3,h); // surface
   if IsSingular(S) then
     return(0);
   end if;
   
-  // make list of points on scheme defined over F_p^i
-  Tr:=[]; 
+  Tr:=[]; // make list of points on base change  
+          // of scheme S defined over F_2^i 
   for i in [1..10] do
-    P3 := ProjectiveSpace(GF(2^i),3);
-    Tr[i] := #Points(Scheme(P3,f)) - 1 - 2^(2*i);
+    Tr[i] := #Points(BaseChange(S,GF(2^i))) - 1 - 2^(2*i);
   end for;
   
-  // make list of possible WeilPolynomials
   R<t>:=PolynomialRing(Rationals(),1);
-  cpl := FrobeniusTracesToWeilPolynomials(Tr, 2, 2, 22: KnownFactor := t-2);
-  cpl_2 := [wp : wp in cpl | CheckWeilPolynomial(wp,2,1: SurfDeg := 4)];
+  cpl := FrobeniusTracesToWeilPolynomials(Tr, 2, 2, 22: 
+          KnownFactor := t-2);
+  cpl_2 := [wp : wp in cpl | CheckWeilPolynomial(wp,2,1: 
+          SurfDeg := 4)];
+  // list of possible WeilPolynomials
+  // Point counting for bigger fields takes too much time.
   
-  // By Tates conjecture this gives a list of the   
-  // possible picard numbers over F2 and hence an upper
-  // bound for the surface defined by f over Q
   pr:=[];
   for i in [1..#cpl_2] do
     pr[i]:=WeilPolynomialToRankBound(cpl_2[i],2);
+    // This gives a list of the possible picard numbers  
+    // over F2 and hence an upperbound for the surface  
+    // defined by h over Q
   end for;
   return(pr);
 end function;
 
+// ----------------------------------------------------
 
+// Function FindK3Rank2(n,m)
+// variables n,m: depends the range of the random interval
+// of which we search for a random polynomial.
+// Important remark: choose n < m!
 
 // The function FindK3Rank2, searches for a quartic 
 // surface with Picard rank 2 with a curve C of genus 2 
@@ -41,256 +55,113 @@ end function;
 // It is constructed by taking a random curve with the 
 // desired properties in P1xP1 and then embedding it 
 // in P3 via the SegreEmbedding.
-
 // The function returns the equation of the curve C 
-// in P1xP1, the defining equation of the quartic surface
-// and the defining equations of C on this surface
+// in P1xP1.
+// It uses the twisted curve D which is defined in
+// P1xP1 by the equation 
 
 // Time this function takes is between 1 and 10 minutes.
 
-function FindK3Rank2()
-    Q:=RationalField();
-    P1tP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
-    P3:=ProjectiveSpace(GF(2),3);
-    g:=x0^2*y1-x1^2*y0; // curve in P1xP1 needed for 
-                        // construction quartic surface
-    a:=[]; // make list for coefficients of polynomial f
-           // for the curve with desired properties
-    r:=23; // checks if rank of quartic surface is 2
-    while r ne 2 do
-        for i in [1..12] do
-            a[i]:=Random([-1,1]); // creates random
-                 // coefficients for polynomial f
-                 // bound can be adjusted
-            if a eq [0,0,0,0,0,0,0,0,0,0,0,0] then
-                a[1]:=1; // make sure that f is not the 
-                         // zero polynomial
-            end if;
-        end for;
-        f:=y0^3*(a[1]*x0^2+a[2]*x0*x1+a[3]*x1^2)
-            +y0^2*y1*(a[4]*x0^2+a[5]*x0*x1+a[6]*x1^2)
-            +y0*y1^2*(a[7]*x0^2+a[8]*x0*x1+a[9]*x1^2)
-            +y1^3*(a[10]*x0^2+a[11]*x0*x1+a[12]*x1^2);
-        if IsNonsingular(Scheme(P1tP1,f)) eq true then
-            D:=Scheme(P1tP1,f*g); // Union of curves 
-                // defined by f and g. 
-            Dim<x,y,z,w>:=SegreEmbedding(D); 
-                // This curve D embeds in a quartic
+function FindK3Rank2(n,m)
+  Q:=RationalField();
+  P1xP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
+  P3:=ProjectiveSpace(GF(2),3);
+  g:=x0^2*y1-x1^2*y0; // curve in P1xP1 needed for 
+                      // construction quartic surface
+  a:=[]; // make list for coefficients of polynomial f
+         // for the curve with desired properties
+  r:=23; // checks if rank of quartic surface is 2
+  while r ne 2 do
+      for i in [1..12] do
+          a[i]:=Random([n,m]); // creates random
+               // coefficients for polynomial f
+               // bound can be adjusted
+          if a eq [0,0,0,0,0,0,0,0,0,0,0,0] then
+              a[1]:=1; // make sure that f is not the 
+                       // zero polynomial
+          end if;
+      end for;
+      f:=y0^3*(a[1]*x0^2+a[2]*x0*x1+a[3]*x1^2)
+        +y0^2*y1*(a[4]*x0^2+a[5]*x0*x1+a[6]*x1^2)
+        +y0*y1^2*(a[7]*x0^2+a[8]*x0*x1+a[9]*x1^2)
+        +y1^3*(a[10]*x0^2+a[11]*x0*x1+a[12]*x1^2);
+      if IsNonsingular(Scheme(P1xP1,f)) eq true then
+        CD:=Scheme(P1xP1,f*g); // Union of curves 
+                              // defined by f and g. 
+        CDim<x,y,z,w>:=SegreEmbedding(CD); 
+                // This curve CD embeds in a quartic
                 // surface which is given by one of the 
                 // defining equations, which apparently 
                 // is the second equation
-            h:=DefiningEquations(Dim)[2];
-            S:=Scheme(P3,h); // quartic surface
-            if IsNonsingular(S) then
-                    // if nonsingular, check Pic number
-                r:=Max(PicNumberMod2(h)); 
-            end if;
+        h:=DefiningEquations(CDim)[2];
+        S:=Scheme(P3,h); // quartic surface
+        if IsNonsingular(S) then
+                // if nonsingular, check Pic number
+            r:=Max(PicNumberMod2(h)); 
         end if;
-    end while;
-    C<x,y,z,w>:=SegreEmbedding(Scheme(P1tP1,f));
-    return(<f,h,DefiningEquations(C)>);
+      end if;
+  end while;
+  return(f);
 end function;
 
+// -----------------------------------------------------
 
 // Function GiveQuartic:
 
-// Starting with a polynomial f in k[x0,x1][y0,y1] 
-// homogeneous of degree (3,2), it gives back a quartic
-// in P3 and the image of the SegreEmbedding of the 
-// curve defined by this polynomial in P1xP1.
+// Starting with a polynomial f,g in k[x0,x1][y0,y1] 
+// homogeneous of degree (3,2) and (1,2)
+// it gives back a quartic in P3 and the image of the 
+// SegreEmbedding of the curves defined by these 
+// polynomials in P1xP1.
 
-// Note that this polynomial defines a curve of degree 5
-// and genus 2, so it satisfied the by us desired 
+// Note that the polynomial f defines a curve of degree 5
+// and genus 2, so it satisfies the by us desired 
 // criteria.
 
 function GiveQuartic(f);
-    Q:=Rationals();
-    P1tP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
-    C:=Scheme(P1tP1,f);
+    Q := Rationals();
+    P1xP1<x0,x1,y0,y1> := ProductProjectiveSpace(Q,[1,1]);
+    C := Scheme(P1xP1,f);
     
     // We define a curve CD, containing the curve
     // C and another curve D, such that its image under 
     // the Segre embedding embeds in a quartic.
     // Moreover, one of the defining equations of this
     // image gives the quartic. 
-    g:=x0^2*y1-x1^2*y0;
-    D:=Scheme(P1tP1,g);
-    CD:=Union(C,D);
-    CDim<x,y,z,w>:=SegreEmbedding(CD);  
-    h:=DefiningEquations(CDim)[2]; // apparently its the
-                                   // second equation
-    Cim<x,y,z,w>:=SegreEmbedding(C);
+    g := x0^2*y1-x1^2*y0;
+    D := Scheme(P1xP1,g);
+    CD := Union(C,D);
+    CDim<x,y,z,w> := SegreEmbedding(CD);  
+    h := DefiningEquations(CDim)[2]; // apparently its the
+                                     // second equation
+    Cim<x,y,z,w> := SegreEmbedding(C);
         // Cim gives image of the curve C on quartic
-    return(<h,DefiningEquations(Cim)>);
+    eqC := DefiningEquations(Cim);
+    Dim<x,y,z,w> := SegreEmbedding(D);
+        // Dim gives image of the curve D on quartic
+    eqD := DefiningEquations(D);
+    return(<h,eqC,eqD>);
 end function;
 
+// ----------------------------------------------------
 
-// Starting with a polynomial f in k[x0,x1][y0,y1] 
-// homogeneous of degree (3,2), it gives back the 
-// involution of the quartic defined by the function
-// GiveQuartic
+// To run this code, we have to do two steps.
 
-// Time it takes is about 1 or 2 minutes
+// Step 1: run FindK3Rank2(n,m) for some integers n<m
+// This function can take some time:
+// Between 1 and 10 minutes.
 
-// The latter part of this code depends on the code of 
-// Ronald v Luijk, see below
+f := FindK3Rank2(0,1);
 
-// Maybe need to add more comments in below code...
+// Step 2: run GiveQuartic for the polynomial that is 
+// found in step 1.
 
-function InvK3(f)
-    Q:=RationalField();    
-    P1tP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
-    g:= -x1^2*y0 + x0^2*y1;
-    D:=Scheme(P1tP1,g);
-    Dim<x,y,z,w>:=SegreEmbedding(D);    
-    q:=DefiningEquations(Dim);
-    
-    C:=Scheme(P1tP1,f);
-    CD:=Union(C,D);
-    CDim<x,y,z,w>:=SegreEmbedding(CD);
-    h:=DefiningEquations(CDim)[2];
-    
-    R<x,y,z,w>:=PolynomialRing(Q,4);
-    P3:=ProjectiveSpace(R);
-    X:=Scheme(P3,h); 
-    
-    // Function field in x0 and y0 constructed in two
-    // steps, since Extension L below can only be  
-    // made if K is function field in one variable
-    preK<xP>:=FunctionField(Q);   
-    K<yP>:=FunctionField(preK); 
-    R<u>:=PolynomialRing(K);
-    L<zP>:=ext<K|Evaluate(h,[xP,yP,u,1])>; 
-    // L is function field of X
-    
-    XL:=BaseChange(X,L);
-    P3L<x,y,z,w>:=AmbientSpace(XL);
-    TCubicL:=Scheme(P3L,q);     
-    L2:=LinearSystem(P3L,2);
-    L2_TCubic:=LinearSystem(L2,TCubicL);
-    P:=XL![xP,yP,zP,1];   // Generic point of X
-    L2_TCubic_P:=LinearSystem(L2_TCubic,P3L!P);
-    p1,p2:=Explode(Sections(L2_TCubic_P));
-    TCubic_plus_line:=Scheme(P3L,[p1,p2]);
-    line:=Difference(TCubic_plus_line,TCubicL);
-    P_and_image:=Difference(line meet XL,TCubicL);
-    ptR:=[Q : Q in Points(P_and_image) | Q ne P];
-    assert #ptR eq 1;
-    R:=ptR[1];
-    return(R);
-end function;
+GiveQuartic(f);
 
-// Similar function, but this one calculates 
-// where a point P on X goes under the involution
-// sometimes this construction fails, in particular
-// if the point is a ramification point or if it
-// lies on the curve D. Not sure what happens there...
+// In our case, in step 1, we found the following f 
+// defining a curve of degree 5 and genus 2:
 
-function InvK3(f,P)
-    Q:=RationalField();    
-    P1tP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
-    g:= -x1^2*y0 + x0^2*y1;
-    D:=Scheme(P1tP1,g);
-    Dim<x,y,z,w>:=SegreEmbedding(D);    
-    q:=DefiningEquations(Dim);
-    
-    C:=Scheme(P1tP1,f);
-    CD:=Union(C,D);
-    CDim<x,y,z,w>:=SegreEmbedding(CD);
-    h:=DefiningEquations(CDim)[2];
-    
-    R<x,y,z,w>:=PolynomialRing(Q,4);
-    P3:=ProjectiveSpace(R);
-    X:=Scheme(P3,h); 
-    
-    if P in X then
-        M:=Matrix(RationalField(),#q,1,
-            [Evaluate(q[i],P):i in [1..#q]]);
-        kerM:=Basis(Kernel(M));
-        if Dimension(Kernel(M)) ne 2 then 
-            return("P? kerM not 2");
-        end if;
-        p1:=&+[R!kerM[1,i]*R!q[i]: i in [1..3]];
-        p2:=&+[R!kerM[2,i]*R!q[i]: i in [1..3]];
-        Y1:=Scheme(P3,p1);
-        Y2:=Scheme(P3,p2);
-        I1:=Intersection(Y1,X);
-        I2:=Intersection(Y2,X);
-        Dd:=Scheme(P3,q);
-        C1:=Difference(I1,Dd);
-        C2:=Difference(I2,Dd);    
-        IP:=Intersection(C1,C2);
-        if Dimension(IP) eq 0 then
-            RP:=RationalPoints(IP);
-            if #RP eq 2 then
-                if RP[1] eq RP!P then 
-                    return(RP[2]);
-                end if;
-                return(RP[1]);
-            end if;
-            return("P? #RP not 2");
-        end if;
-    else return("point not on X");
-    end if;
-end function;
-
-
-// Original code and comments for random K3 by Ronald:
-
-k:=Rationals();
-P3<x,y,z,w>:=ProjectiveSpace(k,3);
-P1<s,t>:=ProjectiveSpace(k,1);
-phi:=map<P1->P3 | [s^3,s^2*t,s*t^2,t^3]>;
-TCubic:=Image(phi);   // Twisted cubic curve
-
-// First construct some X:
-
-L4:=LinearSystem(P3,4);   
-        // Linear system of quartic hypersurfaces in P^3
-L4_TCubic:=LinearSystem(L4,TCubic); 
-        // Linear system of quartic hypersurfaces 
-        // containing TCubic
-M:=1;
-eqnX:=&+[Random([-M..M])*q : q in Sections(L4_TCubic)]; 
-X:=Scheme(P3,eqnX);
-
-// Then the involution:
-
-preK<x0>:=FunctionField(k);   
-        // Silly: Function field in x0 and y0 
-        // constructed in two steps, since
-K<y0>:=FunctionField(preK);  
-        // Extension L below can only be made if K is 
-        // function field in one variable
-R<u>:=PolynomialRing(K);
-L<z0>:=ext<K|Evaluate(eqnX,[x0,y0,u,1])>; 
-        // This is function field of X
-XL:=BaseChange(X,L);
-P3L<xx,yy,zz,ww>:=AmbientSpace(XL);
-TCubicL:=Scheme(P3L,DefiningEquations(TCubic)); 
-        // TCubicL not defined by BaseChange for
-        // magma would build new ambient space...
-L2:=LinearSystem(P3L,2);
-L2_TCubic:=LinearSystem(L2,TCubicL);
-P:=XL![x0,y0,z0,1];   // Generic point of X
-L2_TCubic_P:=LinearSystem(L2_TCubic,P3L!P);
-p1,p2:=Explode(Sections(L2_TCubic_P));
-TCubic_plus_line:=Scheme(P3L,[p1,p2]);
-time line:=Difference(TCubic_plus_line,TCubicL);
-time P_and_image:=Difference(line meet XL,TCubicL);
-time ptR:=[Q : Q in Points(P_and_image) | Q ne P];
-assert #ptR eq 1;
-R:=ptR[1];
-R;
-
-// So the involution sends [the generic point] P to R, 
-// R looks pretty ugly!
-// I guess using the equation of X, 
-// we might be able to make R look better,
-// but it doesn't look like it will become super simple
-// all of a sudden...
-
-
-
-
+R<x0,x1,y0,y1>:=PolynomialRing(Integer,4);
+f := x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
+GiveQuartic(f);
 
