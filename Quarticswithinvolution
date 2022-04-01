@@ -139,7 +139,7 @@ function GiveQuartic(f);
     eqC := DefiningEquations(Cim);
     Dim<x,y,z,w> := SegreEmbedding(D);
         // Dim gives image of the curve D on quartic
-    eqD := DefiningEquations(D);
+    eqD := DefiningEquations(Dim);
     return(<h,eqC,eqD>);
 end function;
 
