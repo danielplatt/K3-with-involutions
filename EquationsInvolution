@@ -1,7 +1,7 @@
 // This code finds explicit polynomials that define the
 // involution of the surface X given by the equation
-// -xx^3*ww - xx^2*zz*ww + xx^2*ww^2 - xx*yy^3 + xx*zz^3 
-// - yy^2*ww^2 + zz^4 + zz*ww^3 = 0.
+// -x^3w - x^2zw + x^2w^2 - xy^3 + xz^3 
+// - y^2w^2 + z^4 + zw^3 = 0.
 // The code uses the Riemann-Roch space of 9H-5D
 // where H is a hypersurface and D is a twisted
 // cubic curve on this hypersurface. 
@@ -10,43 +10,33 @@
 // of genus 2 and degree 5 on this surface
 
 Q := RationalField();
-P1tP1<x0,x1,y0,y1> := ProductProjectiveSpace(Q,[1,1]);
-
-// Curve of type (2,3), genus=2, degree=5
-f := x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
-C := Scheme(P1tP1,f);
-// Embedding in P3
-Cim<x,y,z,w> := SegreEmbedding(C);
-qc := DefiningEquations(Cim);
-
-// Curve of type (2,1), cubic curve
-g := -x1^2*y0 + x0^2*y1;
-D := Scheme(P1tP1,g);
-// Twisted cubic curve
-Dim<x,y,z,w> := SegreEmbedding(D);
-qd := DefiningEquations(Dim);
-
-// Union of those curves gives an equation of a 
-// quartic in P3
-CD := Union(C,D);
-CDim<x,y,z,w> := SegreEmbedding(CD);
-h := DefiningEquations(CDim)[2];
-
-// Quartic in P3
 R<x,y,z,w> := PolynomialRing(Q,4);
 P3 := ProjectiveSpace(R);
+
+// Quartic in P3
+h := -x*y^3 + x*z^3 + z^4 - x^3*w - x^2*z*w
+        + x^2*w^2 - y^2*w^2 + z*w^3;
 X := Scheme(P3,h); 
 
-// Curve C and D as curves on X
-ConX := Scheme(X,qc);
-DonX := Scheme(X,qd);
+// Curve C on X
+eqC:= [-y*z + x*w,
+    x*z^2 + z^3 + x*y*w + w^3,
+    x*y^2 + x^2*z + x*z^2 + y*w^2];
+C := Scheme(X,eqC);
+
+// Curve D on X
+eqD := [-y*z + x*w,
+    y^2 - z*w,
+    x*y - z^2];
+D := Scheme(X,eqD);
+
 
 // Divisors 
-DivC := Divisor(X,ConX); 
+DivC := Divisor(X,C); 
 // It seems like the divisor C is not working 
 // in magma, which is odd. 
 // We will work around this by using D.
-DivD := Divisor(X,DonX);
+DivD := Divisor(X,D);
 DivH := Divisor(X,w);
 
 // Basis of Riemann-Roch space of 9H-5D
@@ -86,7 +76,8 @@ M1 := TranslationOfSimplex(P3,[Pts[i] :
           i in [2,1,4,3,6]]);
 N1 := TranslationOfSimplex(P3,ev);
 i1 := Expand(preinv*N1^(-1)*M1);
-DefiningPolynomials(i1);
+[ DefiningPolynomials(i1)[i]/8 : i in [1..4] ];
+// apparently we can devide by 8...
 
 // Magma is not able to check if i1 is an involu-
 // tion, because the polynomials are too involved
