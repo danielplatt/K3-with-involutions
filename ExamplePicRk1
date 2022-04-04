@@ -1,4 +1,5 @@
 // This code shows that the example in section 3 of our paper
+// (i.e. the branched double cover of P^2)
 // has indeed Picard rank 1.
 // These computations take some time ~15 minutes
 
@@ -23,5 +24,3 @@ ArtinTateFormula(W13, 13, 1);
 // Because the values of the ArtinTateFormule
 // do not not differ a square, we deduce that 
 // the Picard rank is 1.
-
-
