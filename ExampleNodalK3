@@ -1,0 +1,20 @@
+// This code shows that the example in section 4 of our paper
+// (i.e. the blowup of a nodal K3 surface)
+// has indeed Picard rank 2.
+// These computations take some time ~15 minutes
+
+R<x,y,z>:=PolynomialRing(Integers(),3);
+f2:=3*x^2+9*x*y+9*y^2+7*x*z+8*y*z+8*z^2;
+f3:=-8*x^3+8*x^2*y-8*x*y^2-5*y^3-9*x^2*z-x*y*z-6*y^2*z+5*x*z^2-9*y*z^2-7*z^3;
+f4:=-5*x^4+5*x^3*y+4*x^2*y^2+x*y^3-4*x^3*z+8*x^2*y*z-8*x*y^2*z+7*y^3*z+
+    +9*x^2*z^2-4*x*y*z^2+2*y^2*z^2-6*x*z^3+3*y*z^3-4*z^4;
+f:=f3^2-4*f2*f4;
+
+R5 := PolynomialRing(GF(5),3);
+f5 := R5!f;
+W5 := WeilPolynomialOfDegree2K3Surface(f5);
+WeilPolynomialToRankBound(W5,5); // rank is 2
+
+// Picard rank 2 after reduction mod 5 gives an
+// upper bound for Picard rank of the complex
+// K3 surface
