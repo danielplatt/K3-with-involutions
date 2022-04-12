@@ -234,7 +234,7 @@ function Search(k,l)
   cf1:=MonomialCoefficient(cf,y3^2); 
   cf2:=MonomialCoefficient(cf,y3*y4);
   cf3:=MonomialCoefficient(cf,y4^2);
-  assert cf2 ne 0;
+  assert cf2 ne 0; // I guess that if this is not true, the involution is projective. That's why I added this assertion.
 
   D:=cf2^2-4*cf1*cf3;
   fD:=Factorization(Numerator(D));
