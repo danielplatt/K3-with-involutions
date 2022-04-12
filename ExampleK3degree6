@@ -1,0 +1,54 @@
+
+Q := Rationals();
+R<t> := PolynomialRing(Q);
+P4<x0,x1,x2,x3,x4> := ProjectiveSpace(Q,4);
+P2<x,y,z> := ProjectiveSpace(Q,2);
+RR:=CoordinateRing(P2);
+K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2));
+
+eqX1 := x0*x1 - 5*x1^2 - 9*x1*x2 + 8*x2^2 + x0*x3 + 5*x2*x3 - 4*x3^2 - x4^2;
+eqX2 := x0^2*x1 - 1204*x0*x2*x3 - 1291*x0*x3^2 + 1721*x1*x3^2 + 853*x2*x3^2 
+  - 788*x3^3 + x1*x2*x4 - x0*x3*x4 - x0*x4^2 - 5*x1*x4^2 - 33*x2*x4^2 - 197*x3*x4^2;
+X := Scheme(P4,[eqX1,eqX2]);
+
+eqpC := t^5+c[1]*t^4+c[2]*t^3+c[3]*t^2+c[4]*t+c[5];
+pC := HyperellipticCurve(eqpC);
+WP2<xw,yw,zw> := AmbientSpace(pC);
+i := map < WP2 -> P4 | [xw^3, xw^2*zw, xw*zw^2, zw^3, yw] >;
+C := i(pC);
+
+DivC := Divisor(X,C);
+LC := RiemannRochBasis(DivC);
+pi := map < X -> P2 | [LC[1],LC[2],1] >; // +
+B:=BaseScheme(pi);
+
+XK:=BaseChange(X,K);
+P4K<y0,y1,y2,y3,y4>:=AmbientSpace(XK);
+n1:=Numerator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
+n2:=Numerator(Evaluate(LC[2],[y0,y1,y2,y3,y4]));
+d1:=Denominator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
+d2:=Denominator(Evaluate(LC[2],[y0,y1,y2,y3,y4]));
+eqF1:=n1-a*d1;
+eqF2:=n2-b*d2;
+pXF:= XK meet Scheme(P4K,[eqF1,eqF2]);
+XF:=Difference(pXF,Scheme(P4K,Equations(B)));
+
+cf:=ClearDenominators(Equations(XF)[1]);
+cf1:=MonomialCoefficient(cf,y3^2); 
+cf2:=MonomialCoefficient(cf,y3*y4);
+cf3:=MonomialCoefficient(cf,y4^2);
+assert cf2 ne 0;
+
+D:=cf2^2-4*cf1*cf3;
+fD:=Factorization(Numerator(D));
+for p in fD do
+  if Degree(p[1]) eq 6 then
+    f:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
+  end if;
+end for;
+
+R7 := PolynomialRing(GF(7),3);
+f7 := R7!f;
+W7 := WeilPolynomialOfDegree2K3Surface(f7);
+WeilPolynomialToRankBound(W7,7); // rank is 2
+
