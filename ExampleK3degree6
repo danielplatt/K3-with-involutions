@@ -11,7 +11,7 @@ eqX2 := x0^2*x1 - 1204*x0*x2*x3 - 1291*x0*x3^2 + 1721*x1*x3^2 + 853*x2*x3^2
   - 788*x3^3 + x1*x2*x4 - x0*x3*x4 - x0*x4^2 - 5*x1*x4^2 - 33*x2*x4^2 - 197*x3*x4^2;
 X := Scheme(P4,[eqX1,eqX2]);
 
-eqpC := t^5+c[1]*t^4+c[2]*t^3+c[3]*t^2+c[4]*t+c[5];
+eqpC := t^5-5*t^4-8*t^3+8*t^2+5*t-4;
 pC := HyperellipticCurve(eqpC);
 WP2<xw,yw,zw> := AmbientSpace(pC);
 i := map < WP2 -> P4 | [xw^3, xw^2*zw, xw*zw^2, zw^3, yw] >;
