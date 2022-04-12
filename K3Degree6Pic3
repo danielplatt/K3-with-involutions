@@ -172,3 +172,80 @@ end function;
 time Deg2K3RankUpperBound(f,50);
 
 
+function Search(k,l)
+  Q := Rationals();
+  R<t> := PolynomialRing(Q);
+  P4<x0,x1,x2,x3,x4> := ProjectiveSpace(Q,4);
+  P2<x,y,z> := ProjectiveSpace(Q,2);
+  RR:=CoordinateRing(P2);
+  K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2));
+
+  c:=[];
+  for i in [1..5] do 
+    c[i] := Random(k,l);
+  end for;
+  eqpC := t^5+c[1]*t^4+c[2]*t^3+c[3]*t^2+c[4]*t+c[5];
+  pC := HyperellipticCurve(eqpC);
+  pC;
+  assert IsNonSingular(pC) eq true;
+  WP2<xw,yw,zw> := AmbientSpace(pC);
+  i := map < WP2 -> P4 | [xw^3, xw^2*zw, xw*zw^2, zw^3, yw] >;
+  C := i(pC);
+  eqC := Equations(C);
+  L3 := LinearSystem(P4,3);
+  L3C := LinearSystem(L3,C);
+  Sec := Sections(L3C);
+
+  flag:=0;
+  while flag eq 0 do
+    eqs1:=Random(CartesianPower([eqC[i] : i in [1..4]],2));
+    eqs2:=Random(CartesianPower(Sec,2));
+    eq1:=eqs1[1]+eqs1[2];
+    eq2:=eqs2[1]+eqs2[2];
+    X := Scheme(P4,[eq1,eq2]);
+    if not IsSingular(X) and Dimension(X) eq 2 then
+      flag:=1;
+      X; 
+    end if;
+  end while;
+  assert C subset X;
+
+  DivC := Divisor(X,C);
+  LC := RiemannRochBasis(DivC);
+  pi := map < X -> P2 | [LC[1],LC[2],1] >; // +
+  B:=BaseScheme(pi);
+
+  /* + need to check if <LC[1],LC[2]> does not contain 
+  constants or add something with LC[3] */
+
+  XK:=BaseChange(X,K);
+  P4K<y0,y1,y2,y3,y4>:=AmbientSpace(XK);
+
+  n1:=Numerator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
+  n2:=Numerator(Evaluate(LC[2],[y0,y1,y2,y3,y4]));
+  d1:=Denominator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
+  d2:=Denominator(Evaluate(LC[2],[y0,y1,y2,y3,y4]));
+  eqF1:=n1-a*d1;
+  eqF2:=n2-b*d2;
+  pXF:= XK meet Scheme(P4K,[eqF1,eqF2]);
+  XF:=Difference(pXF,Scheme(P4K,Equations(B)));
+
+  cf:=ClearDenominators(Equations(XF)[1]);
+  cf1:=MonomialCoefficient(cf,y3^2); 
+  cf2:=MonomialCoefficient(cf,y3*y4);
+  cf3:=MonomialCoefficient(cf,y4^2);
+  assert cf2 ne 0;
+
+  D:=cf2^2-4*cf1*cf3;
+  fD:=Factorization(Numerator(D));
+  for p in fD do
+    if Degree(p[1]) eq 6 then
+      f:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
+    end if;
+  end for;
+
+  time R:=Deg2K3RankUpperBound(f,50);
+  R;
+  return([X,R,pC]);
+end function;
+
