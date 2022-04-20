@@ -41,7 +41,6 @@ while rank ne 2 do
     X := Scheme(P4,[eq1,eq2]);
     if not IsSingular(X) and Dimension(X) eq 2 then
       flag:=1;
-      X; 
     end if;
   end while;
   assert C subset X;
@@ -77,9 +76,14 @@ while rank ne 2 do
         f:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
       end if;
     end for;
-    R:=Deg2K3RankUpperBound(f,50);
+    R:=Deg2K3RankUpperBound(f,20);
     rank := R[1];
   end if;
 end while;
 
+"Found an example of K3 surface of degree 6 and Picard number 2 with involution."
 
+"The K3 surfaces X is: "
+X;
+"The curve C of genus 2 on X, inducing the involution is given by: "
+C;
