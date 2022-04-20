@@ -319,6 +319,7 @@ chiinv := IsInvertible(reschi);
 reschi;
 
 /* ----------------------------------------------------------------------
+Output file:
 
 The K3 surface X: 
 Scheme over Rational Field defined by
