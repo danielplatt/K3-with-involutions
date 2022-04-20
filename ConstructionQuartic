@@ -67,6 +67,7 @@ Time this function takes is between 1 and 10 minutes.
 */
 
 function FindK3Rank2(n,m)
+  assert n lt m;
   Q:=RationalField();
   P1xP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
   P3:=ProjectiveSpace(GF(2),3);
@@ -126,17 +127,14 @@ function GiveQuartic(f);
     Q := Rationals();
     P1xP1<x0,x1,y0,y1> := ProductProjectiveSpace(Q,[1,1]);
     C := Scheme(P1xP1,f);
-    
-    /* We define a curve CD, containing the curve
-       C and another curve D, such that its image under 
-       the Segre embedding embeds in a quartic.
-       Moreover, one of the defining equations of this
-       image gives the quartic. */ 
-    
+    /* We define a curve CD, containing the curve C and another 
+       curve D, such that its image under the Segre embedding 
+       embeds in a quartic. Moreover, one of the defining 
+       equations of this image gives the quartic. */ 
     g := x0^2*y1-x1^2*y0;
     D := Scheme(P1xP1,g);
     CD := Union(C,D);
-    CDim<x,y,z,w> := SegreEmbedding(CD);  
+    CDim<x,y,z,w> := SegreEmbedding(CD); 
     h := DefiningEquations(CDim)[2]; // apparently its the
                                      // second equation
     Cim<x,y,z,w> := SegreEmbedding(C);
@@ -148,17 +146,20 @@ end function;
 
 /* ----------------------------------------------------
 
-To run this code, we have to do two steps.
+To run this code, we can just run this file.
+Alternatively, you can do the following three steps.
 
-Step 1: run FindK3Rank2(n,m) for some integers n<m.
-This function can take some time.
-Normally between 1 and 10 minutes, but when unlucky
+Step 1: Define the above three functions in Magma.
+
+Step 2: run FindK3Rank2(n,m) for some integers n<m.
+This function can take some time. Normally between 1 
+and 10 minutes, but when unlucky it can take longer.
 */
 
 f := FindK3Rank2(0,1);
 
 /* 
-Step 2: run GiveQuartic for the polynomial that is 
+Step 3: run GiveQuartic for the polynomial that is 
 found in step 1. 
 */
 
@@ -167,7 +168,8 @@ XC := GiveQuartic(f);
 "A quartic X is found with an involution and Picard rank 2:"
 "The quartic X is defined by the equation: ";
 XC[1];
-"the curve C inducing the involution is given on X by the equations: ";
+"the curve C inducing the involution is 
+given on X by the equations: ";
 XC[2];
 
 
