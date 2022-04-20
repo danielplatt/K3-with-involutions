@@ -38,4 +38,4 @@ Use the code `ConstructionQuartic` to generate random quartic surfaces with Pica
 
 ### `ExampleQuartic`
 
-Run the code `ExampleQuartic` to get the equation of the involution on the quartic which is defined in the article, and to compute the equations of the K3 surface viewed as an intersection of an intersection of three quadrics.
+Run the code `ExampleQuartic` to get the equation of the involution on the quartic which is defined in the article. It also computes the model as double cover of P^2 and the model viewed as an intersection of an intersection of three quadrics.
