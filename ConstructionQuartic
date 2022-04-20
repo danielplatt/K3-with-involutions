@@ -164,12 +164,28 @@ Step 2: run GiveQuartic for the polynomial that is
 found in step 1. 
 */
 
-GiveQuartic(f);
+F := GiveQuartic(f);
+"The quartic X is defined by the equation: ";
+F[1];
+"the curve C is given on X by the equations: ";
+F[2];
+"and the twisted cubic D on X is given by: ";
+F[3];
 
-/* In our case, in step 1, we found the following f 
-defining a curve of degree 5 and genus 2:
-R<x0,x1,y0,y1>:=PolynomialRing(Integer,4);
-f := x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
-GiveQuartic(f); */
 
-quit;
+/* 
+In our case, in step 1, we found the following f 
+  x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
+and the output of GiveQuartic(f) was of course:
+
+The quartic X is defined by the equation: 
+  -x*y^3 + x*z^3 + z^4 - x^3*w - x^2*z*w + x^2*w^2 - y^2*w^2 + z*w^3, 
+  [-y*z + x*w,
+    x*z^2 + z^3 + x*y*w + w^3,
+    x*y^2 + x^2*z + x*z^2 + y*w^2], 
+  [-y*z + x*w,
+    y^2 - z*w,
+    x*y - z^2]
+
+ */
+
