@@ -16,4 +16,4 @@ f5 := R5!f;
 W5 := WeilPolynomialOfDegree2K3Surface(f5);
 WeilPolynomialToRankBound(W5,5); // rank is 2
 
-
+quit;
