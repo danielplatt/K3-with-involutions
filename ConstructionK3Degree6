@@ -81,9 +81,13 @@ while rank ne 2 do
   end if;
 end while;
 
-"Found an example of K3 surface of degree 6 and Picard number 2 with involution."
+""A K3 surface X of degree 6 is found with an involution and Picard rank 2:""
 
 "The K3 surfaces X is: "
 X;
-"The curve C of genus 2 on X, inducing the involution is given by: "
+"The curve C of genus 2 on X, inducing the involution, is given by: "
 C;
+"The surface X is a double cover of P2, with the map given by :
+pi;
+"The curve is ramified over:"
+f;
