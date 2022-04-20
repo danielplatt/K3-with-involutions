@@ -318,3 +318,86 @@ chiinv := IsInvertible(reschi);
 "where the isomorphism is given by ";
 reschi;
 
+/* ----------------------------------------------------------------------
+
+The K3 surface X: 
+Scheme over Rational Field defined by
+-x^3*w - x^2*z*w + x^2*w^2 - x*y^3 + x*z^3 - y^2*w^2 + z^4 + z*w^3
+The involution on X is defined by the polynomials: 
+[
+    x^4*y^5 - 5*x^3*y^4*z^2 + 2*x^2*y^5*w^2 + 10*x^2*y^3*z^4 - 8*x^2*y^3*z*w^3 - x^2*y^2*z*w^4 + x^2*y^2*w^5 + 
+        6*x^2*y*z^2*w^4 - x^2*z^6*w + x^2*z^2*w^5 - x^2*z*w^6 + x*y^8 - 7*x*y^6*z*w - x*y^5*w^3 + 15*x*y^4*z^2*w^2 + 
+        x*y^3*z*w^4 - 10*x*y^2*z^6 - 6*x*y^2*z^3*w^3 - x*z^7*w + x*z^6*w^2 - 3*x*z^4*w^4 + 2*y^5*z^3*w - y^4*w^5 - 
+        y^3*z^6 - 8*y^3*z^4*w^2 + y^2*z^4*w^3 + 2*y^2*z*w^6 + 5*y*z^8 + 6*y*z^5*w^3 + z^9 - z^5*w^4 - z^2*w^7,
+    x^3*y^6 + x^3*y^5*z + x^2*y^7 + x^2*y^6*w - 4*x^2*y^5*z^2 - 5*x^2*y^4*z^3 - x^2*y^4*z^2*w + 2*x^2*y^4*z*w^2 - 
+        2*x^2*y^4*w^3 - 3*x^2*y^3*z^3*w + 9*x^2*y^3*z^2*w^2 + 2*x^2*y^3*z*w^3 - 2*x^2*y^3*w^4 - 8*x^2*y^2*z^4*w - 
+        3*x^2*y^2*z^3*w^2 + 7*x^2*y^2*z^2*w^3 - 4*x^2*y^2*z*w^4 - 3*x^2*y*z^4*w^2 + 5*x^2*y*z^3*w^3 + x^2*y*z^2*w^4 - 
+        x^2*y*z*w^5 + x^2*y*w^6 - 2*x^2*z^5*w^2 + x^2*z^3*w^4 - x^2*z^2*w^5 - x*y^7*z + x*y^7*w - 4*x*y^6*z^2 - 
+        x*y^6*z*w + 2*x*y^6*w^2 - 3*x*y^5*z^2*w + 4*x*y^5*z*w^2 + x*y^5*w^3 + 5*x*y^4*z^4 - 5*x*y^4*z^3*w + 
+        2*x*y^4*z*w^3 - x*y^4*w^4 + 10*x*y^3*z^5 - x*y^3*z^3*w^2 + x*y^3*z^2*w^3 - x*y^3*z*w^4 - x*y^3*w^5 - 
+        5*x*y^2*z^5*w - 8*x*y^2*z^4*w^2 + 5*x*y*z^6*w + x*y*z^3*w^4 + x*y*z*w^6 - x*z^6*w^2 + x*z^5*w^3 - 2*x*z^3*w^5 +
+        y^9 - 5*y^7*z*w - y^6*z*w^2 + y^6*w^3 - y^5*z^4 + 5*y^5*z^2*w^2 - y^5*z*w^3 + y^5*w^4 + y^4*z^5 - y^4*z^4*w - 
+        2*y^4*z^2*w^3 + 3*y^4*z*w^4 + 3*y^3*z^6 + 3*y^3*z^5*w - y^3*z^4*w^2 - 9*y^3*z^3*w^3 + y^3*z^2*w^4 - y^3*w^6 - 
+        2*y^2*z^7 + 3*y^2*z^6*w - 4*y^2*z^5*w^2 + 3*y^2*z^3*w^4 - 3*y^2*z^2*w^5 + 7*y*z^7*w - y*z^6*w^2 - y*z^5*w^3 + 
+        9*y*z^4*w^4 - y*z^2*w^6 + y*z*w^7 + z^8*w - z^6*w^3 - z^3*w^6,
+    -x^4*y^5 + 5*x^3*y^4*z^2 + x^2*y^7 - x^2*y^5*w^2 + 2*x^2*y^4*z^2*w + 2*x^2*y^4*z*w^2 - 3*x^2*y^4*w^3 - 
+        10*x^2*y^3*z^4 - 4*x^2*y^3*z^3*w + 7*x^2*y^3*z^2*w^2 - 3*x^2*y^3*z*w^3 - 6*x^2*y^2*z^4*w + 7*x^2*y^2*z^3*w^2 + 
+        x^2*y^2*z^2*w^3 + x^2*y^2*z*w^4 + x^2*y^2*w^5 - 4*x^2*y*z^5*w + 2*x^2*y*z^3*w^3 - 2*x^2*y*z^2*w^4 + x^2*z^4*w^3
+        - x^2*z^2*w^5 - x*y^7*z - x*y^7*w - 4*x*y^6*z^2 + 3*x*y^6*z*w + x*y^6*w^2 - x*y^5*z^3 + 11*x*y^5*z*w^2 - 
+        x*y^5*w^3 - x*y^4*z^3*w + 2*x*y^4*z^2*w^2 - x*y^4*z*w^3 - x*y^4*w^4 - 9*x*y^3*z^4*w - 10*x*y^3*z^2*w^3 + 
+        10*x*y^2*z^6 + x*y^2*z^3*w^3 + x*y^2*z*w^5 - x*y*z^5*w^2 + 2*x*y*z^3*w^4 + x*z^7*w + y^8*z - 3*y^6*z^2*w - 
+        y^6*z*w^2 + y^6*w^3 - 4*y^5*z^2*w^2 + 3*y^5*z*w^3 - y^4*z^5 - y^4*z^4*w - 3*y^4*z^3*w^2 + y^4*z^2*w^3 - y^4*w^5
+        + 4*y^3*z^6 - 3*y^3*z^5*w + 4*y^3*z^3*w^3 - y^3*z^2*w^4 + 6*y^2*z^7 + 3*y^2*z^6*w - y^2*z^5*w^2 + 6*y^2*z^4*w^3
+        - y^2*z^2*w^5 + y^2*z*w^6 - y*z^8 - 2*y*z^6*w^2 - 2*y*z^3*w^5 - z^7*w^2,
+    -x^3*y^6 - x^2*y^6*z + x^2*y^6*w + 3*x^2*y^5*z^2 + x^2*y^5*w^2 - 3*x^2*y^4*z^2*w - 9*x^2*y^3*z^3*w - 
+        3*x^2*y^3*z^2*w^2 + 3*x^2*y^3*z*w^3 - x^2*y^3*w^4 - 7*x^2*y^2*z^3*w^2 + 14*x^2*y^2*z^2*w^3 + 2*x^2*y^2*z*w^4 - 
+        2*x^2*y^2*w^5 - 9*x^2*y*z^4*w^2 - 2*x^2*y*z^3*w^3 + 8*x^2*y*z^2*w^4 - 6*x^2*y*z*w^5 - x^2*z^4*w^3 + 
+        2*x^2*z^3*w^4 + x^2*z^2*w^5 - x^2*z*w^6 + x^2*w^7 - 3*x*y^7*z - 3*x*y^6*z*w + 4*x*y^5*z^3 - x*y^5*z*w^2 - 
+        2*x*y^4*z^2*w^2 + 6*x*y^4*z*w^3 + x*y^4*w^4 - 12*x*y^3*z^3*w^2 + 8*x*y^3*z*w^4 - x*y^3*w^5 + 15*x*y^2*z^5*w - 
+        x*y^2*z^3*w^3 - x*y^2*z*w^5 - x*y^2*w^6 - 4*x*y*z^5*w^2 - 3*x*y*z^4*w^3 - 6*x*y*z^2*w^5 + 2*x*z^6*w^2 + 
+        x*z^3*w^5 + x*z*w^7 - y^8*w + y^6*z^3 + 4*y^6*z*w^2 - 3*y^5*z*w^3 - 2*y^4*z^5 - 3*y^4*z^4*w - 15*y^4*z^2*w^3 - 
+        y^4*z*w^4 + y^4*w^5 - y^3*z^6 + 3*y^3*z^5*w + y^3*z^2*w^4 + 6*y^3*z*w^5 + 12*y^2*z^6*w + 4*y^2*z^5*w^2 - 
+        y^2*z^4*w^3 + 10*y^2*z^3*w^4 + y^2*z^2*w^5 - y^2*w^7 + 2*y*z^6*w^2 - 6*y*z^5*w^3 + 2*y*z^3*w^5 - 6*y*z^2*w^6 + 
+        2*z^7*w^2 - z^6*w^3 - z^5*w^4 + 3*z^4*w^5 - z^2*w^7 + z*w^8
+]
+Model of X as double cover: 
+Scheme over Rational Field defined by
+xx^6 - 2*xx^5*yy + xx^4*yy^2 - 2*xx^3*yy^3 - 2*xx^2*yy^4 + yy^6 + 4*xx^3*yy^2*zz - 4*yy^5*zz - 4*xx^4*zz^2 - 
+    4*xx*yy^3*zz^2 + 4*yy^4*zz^2 - 4*yy^2*zz^4 - 4*xx*zz^5 - ww^2
+where the isomorphism is given by the map: 
+Mapping from: Sch: X to Sch: X2
+with equations : 
+x*y - z^2
+x*w - y*z
+y^2 - z*w
+x^3*y^3 + x^3*y^2*w - x^3*w^3 + x^2*y^3*z - 3*x^2*y^2*z^2 - 2*x^2*y*z^2*w + 3*x^2*y*z*w^2 - 2*x^2*z^3*w - 4*x*y^2*z^3 -
+    3*x*y^2*z^2*w + 2*x*y^2*w^3 + 3*x*y*z^4 - x*z^4*w + 2*x*z^3*w^2 - 2*x*z*w^4 + 2*y^5*w - y^3*z^3 - 8*y^3*z*w^2 + 
+    5*y*z^5 + 6*y*z^2*w^3 + z^6
+with inverse: 
+Mapping from: Sch: X2 to Prj: P3
+with equations : 
+-1/2*xx^3*yy^2 - 1/2*xx^2*yy^3 + 1/2*yy^5 - 1/2*xx^4*zz + 1/2*xx^3*yy*zz + 1/2*xx*yy^3*zz - 1/2*yy^2*ww - 1/2*xx*zz*ww
+xx*yy^4 - xx*yy^3*zz - 1/2*xx^3*zz^2 + 1/2*xx^2*yy*zz^2 + 1/2*yy^3*zz^2 + xx*yy*zz^3 - 1/2*zz^2*ww
+xx^2*yy^3 + 1/2*xx^3*yy*zz - 1/2*xx^2*yy^2*zz - 1/2*yy^4*zz + xx^2*zz^3 + 1/2*yy*zz*ww
+yy^5 + xx*yy^3*zz - yy^4*zz + yy^2*zz^3 + xx*zz^4
+Model as intersection of quadrics: 
+Scheme over Rational Field defined by
+x1*x2 + x2*x3 - x0*x4 + x5^2,
+x2^2 - x0*x3 + x1*x4 + x2*x4 - x2*x5,
+x1*x3 - x2*x4 - x4^2 - x0*x5
+where the isomorphism is given by 
+Mapping from: Sch: X to Sch: X8
+with equations : 
+x^2*y + x*y*z - x*y*w + x*z^2 + z^3
+x^2*w + x*y*z + x*z*w - x*w^2 + y*z^2
+x*y^2 - x*z*w
+y^3 - y*z*w
+y^2*z - z^2*w
+y^2*w - z*w^2
+and inverse
+x2
+x3
+x4
+x5
+
+*/
