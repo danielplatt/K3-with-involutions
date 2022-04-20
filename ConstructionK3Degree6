@@ -1,193 +1,29 @@
-// We try with another example following Wim's construction
+/* 
+explanation...
 
+Important: first load Deg2K3RankUpperBound, functions from this file are needed!
+*/
 
 Q := Rationals();
-R<t> := PolynomialRing(Q);  
-pC := HyperellipticCurve(t^5-t^4+2*t^3-3);
-WP2<x,y,z> := AmbientSpace(pC);
+R<t> := PolynomialRing(Q);
 P4<x0,x1,x2,x3,x4> := ProjectiveSpace(Q,4);
-i := map < WP2 -> P4 | [x^3, x^2*z, x*z^2, z^3, y] >;
-C := i(pC);
-eqC := Equations(C);
-L3 := LinearSystem(P4,3);
-L3C := LinearSystem(L3,C);
-Sec := Sections(L3C);
-flag:=0;
-while flag eq 0 do
-  eqs1:=Random(CartesianPower([eqC[i] : i in [1..4]],2));
-  eqs2:=Random(CartesianPower(Sec,2));
-  eq1:=eqs1[1]+eqs1[2];
-  eq2:=eqs2[1]+eqs2[2];
-  X := Scheme(P4,[eq1,eq2]);
-  if not IsSingular(X) and Dimension(X) eq 2 then
-    flag:=1;
-    X; eqs1, eqs2; 
-  end if;
-end while;
-assert C subset X;
-/*  
-x0*x1 - x1^2 + 2*x1*x2 - 3*x3^2 - x4^2,
-x0^2*x2 + 3*x0*x2*x3 - 2*x0*x3^2 - 3*x1*x3^2 - 3*x2*x3^2 + 3*x3^3 + x2^2*x4 - x1*x3*x4 - x1*x4^2 - x2*x4^2 + x3*x4^2
-*/
-DivC:=Divisor(X,C);
-RiemannRochBasis(DivC);
-/*
-[
-    ($.1*$.3 - 2*$.3^2 + 5*$.3*$.4 - 5*$.4^2 - $.5^2)/($.3^2 - $.2*$.4),
-    ($.2*$.3 - 3*$.3^2 + 2*$.3*$.4 - 3*$.4^2 - $.5^2)/($.3^2 - $.2*$.4),
-    -1
-]
-*/
+P2<x,y,z> := ProjectiveSpace(Q,2);
+RR:=CoordinateRing(P2);
 K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2));
-IP4<x0,x1,x2,x3,x4>:=ProjectiveSpace(K,4);
-eqsX:=[x0*x1 - x1^2 + 2*x1*x2 - 3*x3^2 - x4^2,
-x0^2*x2 + 3*x0*x2*x3 - 2*x0*x3^2 - 3*x1*x3^2 - 3*x2*x3^2 + 3*x3^3 + x2^2*x4 - x1*x3*x4 - x1*x4^2 - x2*x4^2 + x3*x4^2];
-X:=Scheme(IP4,eqsX);
-eqF1:=x0*x2 - 2*x2^2 + 5*x2*x3 - 5*x3^2 - x4^2-a*(x2^2 - x1*x3);
-eqF2:=x1*x2 - 3*x2^2 + 2*x2*x3 - 3*x3^2 - x4^2-b*(x2^2 - x1*x3);
-XF:= X meet Scheme(IP4,[eqF1,eqF2]);
-PXF:=PrimeComponents(XF);
-for C in PXF do
-  Dimension(C);
-end for;
-cf:=Coefficients(x3^2 + (2/3*a^4 + 1/3*a^3*b^2 - 5/3*a^3*b - 2/3*a^3 - a^2*b^3 + 5/3*a^2*b^2 + 14/3*a^2*b + 4/3*a^2 + a*b^4 - 2/3*a*b^3 - 
-        17/3*a*b^2 + 8/3*a - 1/3*b^5 + 1/3*b^4 + 11/3*b^3 + 7/3*b^2 - 2/3*b)/(a^6 - 6*a^5*b - 4*a^5 + 15*a^4*b^2 + 58/3*a^4*b + 
-        4/3*a^4 - 58/3*a^3*b^3 - 36*a^3*b^2 - 6*a^3*b + 20/3*a^3 + 40/3*a^2*b^4 + 34*a^2*b^3 + 50/3*a^2*b^2 - 16/3*a^2*b + 8/3*a^2
-        - 13/3*a*b^5 - 47/3*a*b^4 - 55/3*a*b^3 - 13/3*a*b^2 + 4*a*b + 4/3*a + 1/3*b^6 + 2*b^5 + 16/3*b^4 + 6*b^3 + 7/3*b^2)*x3*x4 
-        + (1/3*a^6 - 2*a^5*b - 4/3*a^5 + 5*a^4*b^2 + 6*a^4*b - 20/3*a^3*b^3 - 34/3*a^3*b^2 - 2/3*a^3*b + 8/3*a^3 + 5*a^2*b^4 + 
-        34/3*a^2*b^3 + 11/3*a^2*b^2 - 7/3*a^2*b + 7/3*a^2 - 2*a*b^5 - 6*a*b^4 - 14/3*a*b^3 - 1/3*a*b + a + 1/3*b^6 + 4/3*b^5 + 
-        2*b^4 + 5/3*b^3 + b^2 - b)/(a^6 - 6*a^5*b - 4*a^5 + 15*a^4*b^2 + 58/3*a^4*b + 4/3*a^4 - 58/3*a^3*b^3 - 36*a^3*b^2 - 
-        6*a^3*b + 20/3*a^3 + 40/3*a^2*b^4 + 34*a^2*b^3 + 50/3*a^2*b^2 - 16/3*a^2*b + 8/3*a^2 - 13/3*a*b^5 - 47/3*a*b^4 - 
-        55/3*a*b^3 - 13/3*a*b^2 + 4*a*b + 4/3*a + 1/3*b^6 + 2*b^5 + 16/3*b^4 + 6*b^3 + 7/3*b^2)*x4^2
-);
-Denominator(cf[2]) eq Denominator(cf[3]);
-cf:=[Denominator(cf[2]), cf[2]*Denominator(cf[2]), cf[3]*Denominator(cf[2])]; 
-D:=cf[2]^2-4*cf[1]*cf[3];
-fD:=Factorization(Numerator(D));
+rank := 22;
 
-IP2<x,y,z>:=ProjectivePlane(Rationals());
-f:=x^6 - 6*x^5*y - 4*x^5*z + 15*x^4*y^2 + 58/3*x^4*y*z + 4/3*x^4*z^2 - 58/3*x^3*y^3 - 36*x^3*y^2*z - 6*x^3*y*z^2 + 20/3*x^3*z^3 + 40/3*x^2*y^4 + 34*x^2*y^3*z + 50/3*x^2*y^2*z^2 - 13/3*x^2*y*z^3 + 16/3*x^2*z^4 - 13/3*x*y^5 - 47/3*x*y^4*z - 55/3*x*y^3 *z^2- 20/3*x*y^2*z^3 - 4/3*x*y*z^4 + 11/3*x*z^5 + 1/3*y^6 + 2*y^5*z + 21/4*y^4*z^2 + 41/6*y^3*z^3+ 47/12*y^2*z^4 - 10/3*y*z^5 - 1/3*z^6;
-
-
-function IsCyclotomic(f)
-  if not IsIrreducible(f) then
-    return false;
-  end if;
-  if Degree(f) eq 1 then
-    if  Eltseq(f) in {[-1,1],[1,1]} then
-      return true;
-    else
-      return false;
-    end if;
-  end if;
-  K<a>:=NumberField(f);
-  rs:=Roots(f,K);
-  r:=rs[1][1];
-  d:=Degree(f);
-  for i in [1..4*d] do
-    ri:=r^i;
-    if ri eq 1 then
-      return true;
-    end if;
-  end for;
-  return false;
-end function;
-
-
-/* Given a homogeneous polynomial f defining a smooth curve C, the function returns all the primes p up to B such that the reduction of C mod p is smooth */
-
-
-function PrimesGoodReduction(f,B)
-  IP2<x,y,z>:=ProjectivePlane(Rationals());
-  C:=Curve(IP2, Evaluate(f,[x,y,z]));
-  assert IsNonsingular(C);
-  ps:=PrimesUpTo(B);
-  if ps[1] eq 2 then
-    Remove(~ps,1);
-  end if; 
-  gps:=[];
-  for p in ps do
-    Cp:=Reduction(C,p);
-    if IsNonsingular(Cp) then
-      Append(~gps,p);
-    end if;
-  end for;
-  return gps;
-end function;
-
-
-
-/* Given a prime p and a  homogeneous polynomial f with integral coefficients defining a smooth sextic curve over IF_p, the function below returns the geometric Picard number of the K3 surface S:w^2=f defined over IF_p; it also returns the discriminant of the geometric Picard lattice of S up to squares */
-
-function Deg2PicNumberModp(f,p)
-  Rp<x,y,z>:=PolynomialRing(GF(p),3);
-  fp:=Rp!Evaluate(f,[x,y,z]);
-  assert IsHomogeneous(f);
-  R<u>:=PolynomialRing(Rationals());
-  wp,wpsing:=WeilPolynomialOfDegree2K3Surface(fp);
-  wp:=R!wp;
-  fwp:=Factorization(wp);
-  ufwp:=[Evaluate(f[1],p*u)/(p^(Degree(f[1]))) : f in fwp];
-  ci:=[IsCyclotomic(f) : f in ufwp];
-  cfwp:=[<fwp[i][1],fwp[i][2],ci[i]> : i in [1..#ci]];
-  tfwp:=[1] cat [f[1]^f[2] : f in cfwp | not f[3]];
-  twp:=&*tfwp;
-  twp:=R!(Numerator(Evaluate(R!twp,1/u)));
-  dp:=SquarefreeFactorization(Abs(Integers()!(p*Evaluate(twp,1/p))));
-  rp:=Degree(&*[f[1]^f[2] : f in cfwp |  f[3]]);
-  rsingp:=Degree(wpsing);
-  return(<rp,rsingp,dp>);
-end function;
-
-
-
-/* Given a homogeneous polynomial f of degree 6, and let X be the degree 2 K3 surface define by w^2=f.
-The function returns an upper bound for  X using van Luijk's method for all primes of good reductions of X up to B.
-It can take long. The bottleneck is the function WeilPolynomialOfDegree2K3Surface */ 
-
-
-function Deg2K3RankUpperBound(f,B)
-  ps:=Remove(PrimesUpTo(B),1);
-  Remove(~ps,1);
-  R<u>:=PolynomialRing(Rationals());
-  p:=ps[1];
-  resp:=Deg2PicNumberModp(f,p);
-  rp:=resp[1];rsingp:=resp[2];dp:=resp[3];
-  rhop:=rp+rsingp;
-  Remove(~ps,1);
-  for p1 in ps do
-    resp1:=Deg2PicNumberModp(f,p1);
-    rp1:=resp1[1];rsingp1:=resp1[2];dp1:=resp1[3];
-    rhop1:=rp1+rsingp1;
-    if rhop1 lt rhop then
-      rhop:=rhop1; dp:=dp1; p:=p1;
-    end if;
-    if rhop1 eq rhop and dp1 ne dp then
-      return <rhop-1, <p, rhop, dp>, <p1, rhop1, dp1>>;
-    end if;
-  end for;
-  return <rhop,<p, rhop, dp>>;
-end function;
-
-time Deg2K3RankUpperBound(f,50);
-
-
-function Search(k,l)
-  Q := Rationals();
-  R<t> := PolynomialRing(Q);
-  P4<x0,x1,x2,x3,x4> := ProjectiveSpace(Q,4);
-  P2<x,y,z> := ProjectiveSpace(Q,2);
-  RR:=CoordinateRing(P2);
-  K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2));
-
+while rank ne 2 do
   c:=[];
-  for i in [1..5] do 
-    c[i] := Random(k,l);
-  end for;
-  eqpC := t^5+c[1]*t^4+c[2]*t^3+c[3]*t^2+c[4]*t+c[5];
+  flag := false;
+  while flag eq false do
+    for i in [1..5] do 
+      c[i] := Random(-10,10); // can be adjusted
+    end for;
+    eqpC := t^5+c[1]*t^4+c[2]*t^3+c[3]*t^2+c[4]*t+c[5];
+    flag := IsSeparable(eqpC);
+  end while;
+
   pC := HyperellipticCurve(eqpC);
-  pC;
-  assert IsNonSingular(pC) eq true;
   WP2<xw,yw,zw> := AmbientSpace(pC);
   i := map < WP2 -> P4 | [xw^3, xw^2*zw, xw*zw^2, zw^3, yw] >;
   C := i(pC);
@@ -212,12 +48,10 @@ function Search(k,l)
 
   DivC := Divisor(X,C);
   LC := RiemannRochBasis(DivC);
+  assert IsCoercible(Q,LC[3]);
   pi := map < X -> P2 | [LC[1],LC[2],1] >; // +
   B:=BaseScheme(pi);
-
-  /* + need to check if <LC[1],LC[2]> does not contain 
-  constants or add something with LC[3] */
-
+  
   XK:=BaseChange(X,K);
   P4K<y0,y1,y2,y3,y4>:=AmbientSpace(XK);
 
@@ -234,18 +68,18 @@ function Search(k,l)
   cf1:=MonomialCoefficient(cf,y3^2); 
   cf2:=MonomialCoefficient(cf,y3*y4);
   cf3:=MonomialCoefficient(cf,y4^2);
-  assert cf2 ne 0; // I guess that if this is not true, the involution is projective. That's why I added this assertion.
+  
+  if cf2 ne 0 then
+    D:=cf2^2-4*cf1*cf3;
+    fD:=Factorization(Numerator(D));
+    for p in fD do
+      if Degree(p[1]) eq 6 then
+        f:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
+      end if;
+    end for;
+    R:=Deg2K3RankUpperBound(f,50);
+    rank := R[1];
+  end if;
+end while;
 
-  D:=cf2^2-4*cf1*cf3;
-  fD:=Factorization(Numerator(D));
-  for p in fD do
-    if Degree(p[1]) eq 6 then
-      f:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
-    end if;
-  end for;
-
-  time R:=Deg2K3RankUpperBound(f,50);
-  R;
-  return([X,R,pC]);
-end function;
 
