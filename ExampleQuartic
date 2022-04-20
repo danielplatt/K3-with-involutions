@@ -318,4 +318,3 @@ chiinv := IsInvertible(reschi);
 "where the isomorphism is given by ";
 reschi;
 
-quit;
