@@ -1,9 +1,7 @@
 /* 
-In this file code is found to find a quartic K3 of 
-Picard rank 2. We first define three functions, which 
-be used in the final code.
-The final code that can be runned after defining these 
-functions is at the bottom.
+In this file code is found to find a quartic K3 of Picard rank 2. 
+We first define three functions, which be used in the final code.
+The final code that we run after defining these functions is at the bottom.
 
 ----------------------------------------------------------
 
@@ -47,20 +45,23 @@ end function;
 /* ----------------------------------------------------
 
 Function FindK3Rank2(n,m)
-variables n,m: depends the range of the random interval
-of which we search for a random polynomial.
+variables n,m: depends the range of the random interval of which
+we search for a random polynomial. 
 Important remark: choose n < m!
 
-The function FindK3Rank2, searches for a quartic 
-surface with Picard rank 2 with a curve C of genus 2 
-and degree 5.
-It is constructed by taking a random curve with the 
-desired properties in P1xP1 and then embedding it 
-in P3 via the SegreEmbedding.
-The function returns the equation of the curve C 
-in P1xP1.
-It uses the twisted curve D which is defined in
-P1xP1 by the equation 
+The function FindK3Rank2, searches for a quartic surface with 
+Picard rank 2 with a curve C of genus 2 and degree 5. It is 
+constructed by taking a random curve with the desired properties 
+in P1xP1 and then embedding it in P3 via the SegreEmbedding.
+The function returns the equation of the curve C in P1xP1.
+It uses the curve D which is defined in P1xP1 by the equation 
+  x0^2*y1-x1^2*y0=0
+The image of this curve in P3 embedded via the SegreEmbedding
+is given by the equations
+    y*z = x*w,
+    y^2 = z*w,
+    x*y = z^2
+This is the twisted cubic curve.
 
 Time this function takes is between 1 and 10 minutes.
 */
@@ -141,10 +142,7 @@ function GiveQuartic(f);
     Cim<x,y,z,w> := SegreEmbedding(C);
         // Cim gives image of the curve C on quartic
     eqC := DefiningEquations(Cim);
-    Dim<x,y,z,w> := SegreEmbedding(D);
-        // Dim gives image of the curve D on quartic
-    eqD := DefiningEquations(Dim);
-    return(<h,eqC,eqD>);
+    return(<h,eqC>);
 end function;
 
 
@@ -164,13 +162,13 @@ Step 2: run GiveQuartic for the polynomial that is
 found in step 1. 
 */
 
-F := GiveQuartic(f);
+XC := GiveQuartic(f);
+
+"A quartic X is found with an involution and Picard rank 2:"
 "The quartic X is defined by the equation: ";
-F[1];
-"the curve C is given on X by the equations: ";
-F[2];
-"and the twisted cubic D on X is given by: ";
-F[3];
+XC[1];
+"the curve C inducing the involution is given on X by the equations: ";
+XC[2];
 
 
 /* 
@@ -179,13 +177,12 @@ In our case, in step 1, we found the following f
 and the output of GiveQuartic(f) was of course:
 
 The quartic X is defined by the equation: 
-  -x*y^3 + x*z^3 + z^4 - x^3*w - x^2*z*w + x^2*w^2 - y^2*w^2 + z*w^3, 
-  [-y*z + x*w,
+-x*y^3 + x*z^3 + z^4 - x^3*w - x^2*z*w + x^2*w^2 - y^2*w^2 + z*w^3, 
+The curve C inducing the involution is given on X by the equations: 
+[
+    -y*z + x*w,
     x*z^2 + z^3 + x*y*w + w^3,
-    x*y^2 + x^2*z + x*z^2 + y*w^2], 
-  [-y*z + x*w,
-    y^2 - z*w,
-    x*y - z^2]
-
- */
+    x*y^2 + x^2*z + x*z^2 + y*w^2
+] 
+*/
 
