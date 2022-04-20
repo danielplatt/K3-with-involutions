@@ -81,13 +81,13 @@ while rank ne 2 do
   end if;
 end while;
 
-"A K3 surface X of degree 6 is found with an involution and Picard rank 2: "
+"A K3 surface X of degree 6 is found with an involution and Picard rank 2: ";
 
-"The K3 surfaces X is: "
+"The K3 surface X is given by: ";
 X;
-"The curve C of genus 2 on X, inducing the involution, is given by: "
+"The curve C of genus 2 on X, inducing the involution, is given by: ";
 C;
-"The surface X is a double cover of P2, with the map given by :
+"The surface X is a double cover of P2, with the covering map given by :;
 pi;
-"The curve is ramified over:"
+"This map is ramified over the curve defined by: ";
 f;
