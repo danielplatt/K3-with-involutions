@@ -6,22 +6,32 @@ P2<x,y,z> := ProjectiveSpace(Q,2);
 RR:=CoordinateRing(P2);
 K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2));
 
+// Defining equations K3 surface X:
 eqX1 := x0*x1 - 5*x1^2 - 9*x1*x2 + 8*x2^2 + x0*x3 + 5*x2*x3 - 4*x3^2 - x4^2;
 eqX2 := x0^2*x1 - 1204*x0*x2*x3 - 1291*x0*x3^2 + 1721*x1*x3^2 + 853*x2*x3^2 
   - 788*x3^3 + x1*x2*x4 - x0*x3*x4 - x0*x4^2 - 5*x1*x4^2 - 33*x2*x4^2 - 197*x3*x4^2;
 X := Scheme(P4,[eqX1,eqX2]);
+assert IsNonSingular(X) eq true;
 
+"The K3 surface is given by "
+X;
+
+// Defining curve C on X given by the embedding of a hyperelliptic curve
 eqpC := t^5-5*t^4-8*t^3+8*t^2+5*t-4;
 pC := HyperellipticCurve(eqpC);
 WP2<xw,yw,zw> := AmbientSpace(pC);
 i := map < WP2 -> P4 | [xw^3, xw^2*zw, xw*zw^2, zw^3, yw] >;
 C := i(pC);
 
+// Double cover:
 DivC := Divisor(X,C);
 LC := RiemannRochBasis(DivC);
-pi := map < X -> P2 | [LC[1],LC[2],1] >; // +
-B:=BaseScheme(pi);
+pi := map < X -> P2 | [LC[1],LC[2],1] >;
 
+// Subscheme X where pi is not defined
+B:=BaseScheme(pi); 
+
+// Calculating branched curve in P2, it is given by f:
 XK:=BaseChange(X,K);
 P4K<y0,y1,y2,y3,y4>:=AmbientSpace(XK);
 n1:=Numerator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
@@ -46,9 +56,14 @@ for p in fD do
     f:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
   end if;
 end for;
+"Model as double cover is given by w^2=f(x,y,z) with f equal to "
+f;
 
+// Showing that the Picard number is 2:
 R7 := PolynomialRing(GF(7),3);
 f7 := R7!f;
 W7 := WeilPolynomialOfDegree2K3Surface(f7);
+"Picard number of X is ";
 WeilPolynomialToRankBound(W7,7); // rank is 2
 
+quit;
