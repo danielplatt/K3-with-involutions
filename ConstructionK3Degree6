@@ -81,7 +81,7 @@ while rank ne 2 do
   end if;
 end while;
 
-""A K3 surface X of degree 6 is found with an involution and Picard rank 2:""
+"A K3 surface X of degree 6 is found with an involution and Picard rank 2: "
 
 "The K3 surfaces X is: "
 X;
