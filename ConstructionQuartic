@@ -171,3 +171,5 @@ defining a curve of degree 5 and genus 2:
 R<x0,x1,y0,y1>:=PolynomialRing(Integer,4);
 f := x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
 GiveQuartic(f); */
+
+quit;
