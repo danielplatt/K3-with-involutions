@@ -1,15 +1,17 @@
-// In this file code is found to find a quartic K3 of 
-// Picard rank 2. We first define three functions, which 
-// be used in the final code.
-// The final code that can be runned after defining these 
-// functions is at the bottom.
+/* 
+In this file code is found to find a quartic K3 of 
+Picard rank 2. We first define three functions, which 
+be used in the final code.
+The final code that can be runned after defining these 
+functions is at the bottom.
 
-// ------------------------------------------------------
+------------------------------------------------------
 
-// The function PicNumberMod2(f) calculates an upperbound
-// for the Picard number of the surface defined over F2 
-// by a quartic polynomial h. 
-// This function takes about 50 seconds to run.
+The function PicNumberMod2(f) calculates an upperbound
+for the Picard number of the surface defined over F2 
+by a quartic polynomial h. 
+This function takes about 50 seconds to run.
+*/
 
 function PicNumberMod2(h)  
   P3:=ProjectiveSpace(GF(2),3);
@@ -42,25 +44,27 @@ function PicNumberMod2(h)
   return(pr);
 end function;
 
-// ----------------------------------------------------
+/*
+----------------------------------------------------
 
-// Function FindK3Rank2(n,m)
-// variables n,m: depends the range of the random interval
-// of which we search for a random polynomial.
-// Important remark: choose n < m!
+Function FindK3Rank2(n,m)
+variables n,m: depends the range of the random interval
+of which we search for a random polynomial.
+Important remark: choose n < m!
 
-// The function FindK3Rank2, searches for a quartic 
-// surface with Picard rank 2 with a curve C of genus 2 
-// and degree 5.
-// It is constructed by taking a random curve with the 
-// desired properties in P1xP1 and then embedding it 
-// in P3 via the SegreEmbedding.
-// The function returns the equation of the curve C 
-// in P1xP1.
-// It uses the twisted curve D which is defined in
-// P1xP1 by the equation 
+The function FindK3Rank2, searches for a quartic 
+surface with Picard rank 2 with a curve C of genus 2 
+and degree 5.
+It is constructed by taking a random curve with the 
+desired properties in P1xP1 and then embedding it 
+in P3 via the SegreEmbedding.
+The function returns the equation of the curve C 
+in P1xP1.
+It uses the twisted curve D which is defined in
+P1xP1 by the equation 
 
-// Time this function takes is between 1 and 10 minutes.
+Time this function takes is between 1 and 10 minutes.
+*/
 
 function FindK3Rank2(n,m)
   Q:=RationalField();
@@ -104,19 +108,20 @@ function FindK3Rank2(n,m)
   return(f);
 end function;
 
-// -----------------------------------------------------
+/*
+-----------------------------------------------------
 
-// Function GiveQuartic:
+Function GiveQuartic:
 
-// Starting with a polynomial f,g in k[x0,x1][y0,y1] 
-// homogeneous of degree (3,2) and (1,2)
-// it gives back a quartic in P3 and the image of the 
-// SegreEmbedding of the curves defined by these 
-// polynomials in P1xP1.
+Starting with a polynomial f,g in k[x0,x1][y0,y1] 
+homogeneous of degree (3,2) and (1,2)
+it gives back a quartic in P3 and the image of the 
+SegreEmbedding of the curves defined by these 
+polynomials in P1xP1.
 
-// Note that the polynomial f defines a curve of degree 5
-// and genus 2, so it satisfies the by us desired 
-// criteria.
+Note that the polynomial f defines a curve of degree 5
+and genus 2, so it satisfies the by us desired criteria.
+*/
 
 function GiveQuartic(f);
     Q := Rationals();
@@ -143,25 +148,28 @@ function GiveQuartic(f);
     return(<h,eqC,eqD>);
 end function;
 
-// ----------------------------------------------------
 
-// To run this code, we have to do two steps.
+/* 
+----------------------------------------------------
 
-// Step 1: run FindK3Rank2(n,m) for some integers n<m
-// This function can take some time:
-// Between 1 and 10 minutes.
+To run this code, we have to do two steps.
+
+Step 1: run FindK3Rank2(n,m) for some integers n<m.
+This function can take some time.
+Normally between 1 and 10 minutes, but when unlucky
+*/
 
 f := FindK3Rank2(0,1);
 
-// Step 2: run GiveQuartic for the polynomial that is 
-// found in step 1.
+/* 
+Step 2: run GiveQuartic for the polynomial that is 
+found in step 1. 
+*/
 
 GiveQuartic(f);
 
-// In our case, in step 1, we found the following f 
-// defining a curve of degree 5 and genus 2:
-
+/* In our case, in step 1, we found the following f 
+defining a curve of degree 5 and genus 2:
 R<x0,x1,y0,y1>:=PolynomialRing(Integer,4);
 f := x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
-GiveQuartic(f);
-
+GiveQuartic(f); */
