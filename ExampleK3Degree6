@@ -59,7 +59,7 @@ end for;
 "Model as double cover is given by w^2=f(x,y,z) with f equal to ";
 f;
 
-// Showing that the Picard number is 2:
+// Showing that the Picard number is 2 (again it takes quite some time):
 R7 := PolynomialRing(GF(7),3);
 f7 := R7!f;
 W7 := WeilPolynomialOfDegree2K3Surface(f7);
