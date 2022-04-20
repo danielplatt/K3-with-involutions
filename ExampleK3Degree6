@@ -66,4 +66,3 @@ W7 := WeilPolynomialOfDegree2K3Surface(f7);
 "Picard number of X is ";
 WeilPolynomialToRankBound(W7,7); // rank is 2
 
-quit;
