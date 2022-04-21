@@ -208,8 +208,8 @@ and 10 minutes, but when unlucky it can take longer.
 if assigned k and assigned l then 
   assert k lt l;
 else 
-  k := -1;
-  l := 1;
+  k := -10;
+  l := 10;
 end if;
 
 
@@ -231,7 +231,7 @@ XC[2];
 
 
 /* 
-In our case, we found the following f 
+In our case, we set k=0 and l=1. We found the following f 
   x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
 and the output of GiveQuartic(f) was of course:
 
