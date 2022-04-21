@@ -101,3 +101,31 @@ C;
 pi;
 "This map is ramified over the curve defined by: ";
 ff;
+
+
+/* Output example:
+
+A smooth quartic X is found with an involution and Picard rank 2: 
+
+The K3 surface X is: 
+Scheme over Rational Field defined by
+6*x^2*y^2 + 3*y^4 + 6*x*z^3 + z^4 - 6*x^3*w + 7*x^2*y*w + 7*x*y^2*w + 10*y^3*w - 7*x^2*z*w - 7*x*z^2*w + 3*z^3*w - 3*x^2*w^2 - 11*x*y*w^2 + 10*y^2*w^2 - 7*x*z*w^2 + 8*z^2*w^2 - 10*x*w^3 - 10*z*w^3
+
+The curve C of genus 2 on X, inducing the involution, is given by: 
+Scheme over Rational Field defined by
+-y*z + x*w,
+-6*x*z^2 - z^3 + 6*x^2*w + 3*y^2*w + 7*x*z*w - 3*z^2*w + 7*x*w^2 + 10*y*w^2 - 8*z*w^2 + 10*w^3,
+6*x^2*y + 3*y^3 - 6*x^2*z - x*z^2 + 7*x^2*w + 7*x*y*w + 10*y^2*w - 3*x*z*w - 8*x*w^2 + 10*y*w^2
+
+The surface X is a double cover of P2, with the covering map given by:
+Mapping from: Sch: X to Prj: P2
+with equations : 
+x*y - z^2
+-y*z + x*w
+y^2 - z*w
+
+This map is ramified over the curve defined by: 
+36*s^6 - 12*s^5*t - 83*s^4*t^2 - 50*s^3*t^3 + 55*s^2*t^4 - 306*s*t^5 - 231*t^6 - 60*s^5*u + 14*s^4*t*u + 86*s^3*t^2*u - 176*s^2*t^3*u + 406*s*t^4*u + 478*t^5*u + 37*s^4*u^2 - 22*s^3*t*u^2 + 562*s^2*t^2*u^2 + 356*s*t^3*u^2 - 213*t^4*u^2 + 
+    182*s^3*u^3 + 62*s^2*t*u^3 - 278*s*t^2*u^3 - 102*t^3*u^3 - 15*s^2*u^4 + 42*s*t*u^4 + 149*t^2*u^4 + 236*s*u^5 + 60*t*u^5 - 20*u^6
+*/
+
