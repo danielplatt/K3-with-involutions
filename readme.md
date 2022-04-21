@@ -34,7 +34,9 @@ We also have a lower bound 2, because the exceptional divisor and the hyperplane
 
 Use the code `ConstructionQuartic` to generate random quartic surfaces with Picard number at most 2 and an involution coming from a curve C of genus 2 and degree 5. 
 (It is shown in the article that this implies that the quartic surface has Picard number *equal* to 2.)
-It also gives back the model as a double cover.
+It also gives back the model as a double cover. The function can take quite some time to find an example. 
+
+The code of `ConstructionQuartic2` is an alternative which has the same output as the original function. The difference is that it only checks the upperbound for the reduction mod 2. While it finds less surfaces of Picard number 2, the upside is that the code is way faster!
 
 ### `ExampleQuartic`
 
@@ -42,8 +44,8 @@ Run the code `ExampleQuartic` to get the equation of the involution on the quart
 
 ### `ConstructionK3Degree6`
 
-Use the code `ConstructionK3Degree6` to generate random K3 surfaces of degree 6 in P^4 of Picard number 2 and an involution coming from a hyperelliptic curve C of genus 2. It also gives back the model as a double cover.
+Use the code `ConstructionK3Degree6` to generate random K3 surfaces of degree 6 in P^4 of Picard number 2 and an involution coming from a curve C of genus 2. It also gives back the model as a double cover.
 
 ### `ExampleK3Degree6`
 
-Run the code `ExampleK3Degree6` to get the model as double cover of P^2 and the model which is defined in the article. It also shows that the Picard number of this surface is 2.
+Run the code `ExampleK3Degree6` to get the model as double cover of P^2 of the example in paragraph 8 in the article. It also shows that the Picard number of this surface is 2.
