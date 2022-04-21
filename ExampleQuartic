@@ -298,8 +298,13 @@ chi := map < X -> P5 | LHD >;
 
 assert IsIrreducible(X) eq true; // needs to be runned to find
 X8p := Image(chi); // the image of chi
-X8 := Scheme(P5,[Equations(X8p)[i] : 
-        i in [4,5,6]]);
+eq8 := Equations(X8p);
+for pol in eq8 do
+  if Degree(pol) ne 2 then
+    eq8:=Exclude(eq8,pol);
+  end if;
+end for;
+X8 := Scheme(P5,eq8);
 assert X8 eq X8p; 
 
 "Model as intersection of quadrics: ";
