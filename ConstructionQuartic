@@ -1,6 +1,19 @@
 /* 
-explanation...
+In this file code is found to find a quartic K3 of Picard rank 2. 
+Also the model is given as double cover of P2.
+
+The function can take quite a lot of time, because it uses the 
+time consuming function Deg2K3RankUpperBound. This is needed to 
+check if the surface has Picard rank 2. If not, the process starts
+again so if we are unlucky it can take more than one hour...
 */
+
+if assigned k and assigned l then 
+  assert k lt l;
+else 
+  k := -1;
+  l := 1;
+end if;
 
 load Deg2K3RankUpperBound;
 
@@ -21,7 +34,7 @@ while rank ne 2 do
   asrt := false;
   while asrt ne true do
     for i in [1..12] do
-      c[i]:=Random([-10..10]); // creates random coefficients for polynomial f
+      c[i]:=Random([k..l]); // creates random coefficients for polynomial f
                               // bound can be adjusted
       if c eq [0,0,0,0,0,0,0,0,0,0,0,0] then
         c[1]:=1; // make sure that f is not the zero polynomial
@@ -101,7 +114,6 @@ C;
 pi;
 "This map is ramified over the curve defined by: ";
 ff;
-
 
 /* Output example:
 
