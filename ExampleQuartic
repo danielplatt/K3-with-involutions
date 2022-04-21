@@ -7,7 +7,7 @@ Moreover, we will calculate different models of the surface X
 */
 
 Q := RationalField();
-P3<x,y,z,w> := ProjectiveSpace(Q,4);
+P3<x,y,z,w> := ProjectiveSpace(Q,3);
 
 // Quartic in P3
 h := -x*y^3 + x*z^3 + z^4 - x^3*w - x^2*z*w
