@@ -205,7 +205,15 @@ This function can take some time. Normally between 1
 and 10 minutes, but when unlucky it can take longer.
 */
 
-f := FindK3Rank2(0,1);
+if assigned k and assigned l then 
+  assert k lt l;
+else 
+  k := -1;
+  l := 1;
+end if;
+
+
+f := FindK3Rank2(k,l);
 
 /* 
 Step 3: run GiveQuartic for the polynomial that is 
