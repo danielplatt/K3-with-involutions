@@ -289,7 +289,7 @@ Z := Zp @@ phi; // branched curve in P3;
 
 // Model in P5
 
-LHD := RiemannRochBasis(DivH+DivD);
+LHD := RiemannRochBasis(3*DivH-DivC);
 // equations for map to P5
 P5<x0,x1,x2,x3,x4,x5> := ProjectiveSpace(Q,5); 
 chi := map < X -> P5 | LHD >; 
@@ -309,7 +309,7 @@ assert X8 eq X8p;
 
 "Model as intersection of quadrics: ";
 X8; // model in P5
-assert chi(D) eq Scheme(P5,[x2,x3,x4,x5]); // streched twisted cubic curve
+assert chi(D) eq Scheme(P5,[x1,x2,x4,x5]); // streched twisted cubic curve
 
 reschi := map < X -> X8 | LHD >;
 chiinv := IsInvertible(reschi);
@@ -382,21 +382,21 @@ xx^2*yy^3 + 1/2*xx^3*yy*zz - 1/2*xx^2*yy^2*zz - 1/2*yy^4*zz + xx^2*zz^3 + 1/2*yy
 yy^5 + xx*yy^3*zz - yy^4*zz + yy^2*zz^3 + xx*zz^4
 Model as intersection of quadrics: 
 Scheme over Rational Field defined by
-x1*x2 + x2*x3 - x0*x4 + x5^2,
-x2^2 - x0*x3 + x1*x4 + x2*x4 - x2*x5,
-x1*x3 - x2*x4 - x4^2 - x0*x5
+x1^2 + x0*x2 + x2*x3 + x1*x4 - x2*x4 - x3*x4 - x1*x5,
+x2^2 + x2*x3 + x1*x4 + x4^2 - x0*x5 - x3*x5,
+x1*x3 - x0*x4 - x3*x4 - x5^2
 where the isomorphism is given by 
 Mapping from: Sch: X to Sch: X8
 with equations : 
-x^2*y + x*y*z - x*y*w + x*z^2 + z^3
-x^2*w + x*y*z + x*z*w - x*w^2 + y*z^2
-x*y^2 - x*z*w
-y^3 - y*z*w
-y^2*z - z^2*w
-y^2*w - z*w^2
+x*y^2 + x^2*z - y^2*z - z^3 + y*w^2 - w^3
+-x*y*z + x^2*w
+-y^2*z + x*y*w
+y^2*z + x*z^2 + z^3 + w^3
+-y*z^2 + x*z*w
+-y*z*w + x*w^2
 and inverse
+x1
 x2
-x3
 x4
 x5
 
