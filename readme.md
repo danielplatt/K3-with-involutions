@@ -8,6 +8,8 @@ All code is written in [Magma (link)](magma.maths.usyd.edu.au).
 
 On a machine that has Magma installed, run in the command line: `magma` and then, once Magma has started, run `load <file>;`, where you replace `<file>` with one of the files from the repository. The runnable Magma files are explained below.
 
+The files starting with `Construction...` have a random generator. The values from these are set to pick integers between -10 and 10. If one wants to generate more examples, define integers k,l with k<l.
+
 ### `ExampleBranchedDoublePlane`
 
 This code computes the Picard number of the double cover of P^2, branched over the sextic defined by the equation `f:=7*x^6+x^5*y-x^4*y^2-9*x^3*y^3+2*x^2*y^4-6*x*y^5+7*y^6+3*x^5*z
