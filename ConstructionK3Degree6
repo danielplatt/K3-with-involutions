@@ -4,6 +4,14 @@ explanation...
 
 load Deg2K3RankUpperBound;
 
+if assigned k and assigned l then 
+  assert k lt l;
+else 
+  k := -1;
+  l := 1;
+end if;
+
+
 Q := Rationals();
 R<t> := PolynomialRing(Q);
 P4<x0,x1,x2,x3,x4> := ProjectiveSpace(Q,4);
@@ -17,7 +25,7 @@ while rank ne 2 do
   flag := false;
   while flag eq false do
     for i in [1..5] do 
-      c[i] := Random(-10,10); // can be adjusted
+      c[i] := Random([k..l]); // can be adjusted
     end for;
     eqpC := t^5+c[1]*t^4+c[2]*t^3+c[3]*t^2+c[4]*t+c[5];
     flag := IsSeparable(eqpC);
