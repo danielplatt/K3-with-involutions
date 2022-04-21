@@ -4,6 +4,8 @@ explanation...
 Important: first load Deg2K3RankUpperBound, functions from this file are needed!
 */
 
+load Deg2K3RankUpperBound;
+
 Q:=RationalField();
 P1xP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
 P3<x,y,z,w>:=ProjectiveSpace(Q,3);
