@@ -1,7 +1,5 @@
 /* 
 explanation...
-
-Important: first load Deg2K3RankUpperBound, functions from this file are needed!
 */
 
 load Deg2K3RankUpperBound;
