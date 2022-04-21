@@ -7,8 +7,8 @@ load Deg2K3RankUpperBound;
 if assigned k and assigned l then 
   assert k lt l;
 else 
-  k := -1;
-  l := 1;
+  k := -10;
+  l := 10;
 end if;
 
 
