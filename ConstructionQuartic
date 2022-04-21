@@ -11,8 +11,8 @@ again so if we are unlucky it can take more than one hour...
 if assigned k and assigned l then 
   assert k lt l;
 else 
-  k := -1;
-  l := 1;
+  k := -10;
+  l := 10;
 end if;
 
 load Deg2K3RankUpperBound;
