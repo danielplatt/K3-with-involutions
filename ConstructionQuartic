@@ -1,0 +1,103 @@
+/* 
+explanation...
+
+Important: first load Deg2K3RankUpperBound, functions from this file are needed!
+*/
+
+Q:=RationalField();
+P1xP1<x0,x1,y0,y1>:=ProductProjectiveSpace(Q,[1,1]);
+P3<x,y,z,w>:=ProjectiveSpace(Q,3);
+P2<s,t,u> := ProjectiveSpace(Q,2);
+RR:=CoordinateRing(P2);
+K<a,b>:=FieldOfFractions(PolynomialRing(Q,2));
+
+g:=x0^2*y1-x1^2*y0; // curve in P1xP1 needed for 
+                      // construction quartic surface
+c:=[]; // make list for coefficients of polynomial f
+         // for the curve with desired properties
+rank := 22; // checks if rank of quartic surface is 2
+
+while rank ne 2 do
+  asrt := false;
+  while asrt ne true do
+    for i in [1..12] do
+      c[i]:=Random([-10..10]); // creates random coefficients for polynomial f
+                              // bound can be adjusted
+      if c eq [0,0,0,0,0,0,0,0,0,0,0,0] then
+        c[1]:=1; // make sure that f is not the zero polynomial
+      end if;
+    end for;
+    f:=y0^3*(c[1]*x0^2+c[2]*x0*x1+c[3]*x1^2)
+        +y0^2*y1*(c[4]*x0^2+c[5]*x0*x1+c[6]*x1^2)
+        +y0*y1^2*(c[7]*x0^2+c[8]*x0*x1+c[9]*x1^2)
+        +y1^3*(c[10]*x0^2+c[11]*x0*x1+c[12]*x1^2);
+    if IsNonsingular(Scheme(P1xP1,f)) eq true then
+      CD:=Scheme(P1xP1,f*g); // Union of curves defined by f and g. 
+      CDim:=SegreEmbedding(CD); 
+      /* This curve CD embeds in a quartic surface which is given by one of 
+         the defining equations. Apperently it is the second one... */
+      
+      h:=DefiningEquations(CDim)[2];
+      X:=Scheme(P3,h); // quartic surface
+      asrt := IsNonsingular(X);
+    end if;
+  end while;
+
+  pC := Scheme(P1xP1,f);
+  Cim := SegreEmbedding(pC);
+  eqC := Equations(Cim);
+  C := Scheme(P3,eqC);
+  assert C subset X;
+  
+  pD := Scheme(P1xP1,g);
+  Dim := SegreEmbedding(pD);
+  eqD := Equations(Dim);
+  D := Scheme(P3,eqD);
+  assert D subset X;
+
+  DivC := Divisor(X,C);
+  LC := RiemannRochBasis(DivC);
+  pi := map < X -> P2 | [LC[1],LC[2],LC[3]] >;
+  pieq := DefiningEquations(pi);
+  B:=BaseScheme(pi);
+  
+  XK:=BaseChange(X,K);
+  P3K<z0,z1,z2,z3>:=AmbientSpace(XK);
+  
+  pe1 := Evaluate(pieq[1],[z0,z1,z2,z3]);
+  pe2 := Evaluate(pieq[2],[z0,z1,z2,z3]);
+  pe3 := Evaluate(pieq[3],[z0,z1,z2,z3]);
+  
+  eqF1 := pe1-a*pe3;
+  eqF2 := pe2-b*pe3;
+  pXF:= XK meet Scheme(P3K,[eqF1,eqF2]);
+  XF:=Difference(pXF,Scheme(P3K,Equations(B)));
+
+  cf:=ClearDenominators(Equations(XF)[1]);
+  cf1:=MonomialCoefficient(cf,z2^2); 
+  cf2:=MonomialCoefficient(cf,z2*z3);
+  cf3:=MonomialCoefficient(cf,z3^2);
+  
+  if cf2 ne 0 then
+    D := cf2^2 - 4*cf1*cf3;
+    fD := Factorization(Numerator(D));
+    for p in fD do
+      if Degree(p[1]) eq 6 then
+        ff := ClearDenominators(RR!(u^6*Evaluate(p[1],[s/u,t/u])));
+      end if;
+    end for;
+    R := Deg2K3RankUpperBound(ff,20);
+    rank := R[1];
+  end if;
+end while;
+
+"A smooth quartic X is found with an involution and Picard rank 2: ";
+
+"The K3 surface X is: ";
+X;
+"The curve C of genus 2 on X, inducing the involution, is given by: ";
+C;
+"The surface X is a double cover of P2, with the covering map given by: ";
+pi;
+"This map is ramified over the curve defined by: ";
+ff;
