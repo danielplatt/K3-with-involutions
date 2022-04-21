@@ -3,11 +3,9 @@ This code shows that the example in section 3 of our
 paper (i.e. the branched double cover of P^2)
 has indeed Picard rank 1.
 These computations take some time ~15 minutes
-
-Important: first load Deg2K3RankUpperBound, 
-           functions of this file are needed!
 */
 
+load Deg2K3RankUpperBound;
 
 R<x,y,z>:=PolynomialRing(Integers(),3); 
 f:=7*x^6+x^5*y-x^4*y^2-9*x^3*y^3+2*x^2*y^4-6*x*y^5+7*y^6+3*x^5*z
