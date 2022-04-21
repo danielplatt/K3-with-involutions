@@ -143,6 +143,50 @@ function GiveQuartic(f);
     return(<h,eqC>);
 end function;
 
+/* ----------------------------------------------------
+
+function DoubleCover(XC);
+  Q := Rationals();
+  K<a,b> := FunctionField(Q,2);
+  P2<s,t,u> := ProjectiveSpace(Q,2); 
+  
+  X := XC[1];
+  P3<x,y,z,w> := AmbientSpace(X);
+  C := Scheme(P3,XC[2]);
+  DivC := Divisor(X,C);
+  LC := RiemannRochBasis(DivC);
+  pi := map < X -> P2 | [LC[1],LC[2],LC[3]] >;
+  pieq := DefiningEquations(pi);
+  B := BaseScheme(pi);
+  
+  XK := BaseChange(X,K);
+  P3K<z0,z1,z2,z3> := AmbientSpace(XK);
+  
+  pe1 := Evaluate(pieq[1],[z0,z1,z2,z3]);
+  pe2 := Evaluate(pieq[2],[z0,z1,z2,z3]);
+  pe3 := Evaluate(pieq[3],[z0,z1,z2,z3]);
+  
+  eqF1 := pe1-a*pe3;
+  eqF2 := pe2-b*pe3;
+  pXF := XK meet Scheme(P3K,[eqF1,eqF2]);
+  XF := Difference(pXF,Scheme(P3K,Equations(B)));
+
+  cf:=ClearDenominators(Equations(XF)[1]);
+  cf1:=MonomialCoefficient(cf,z2^2); 
+  cf2:=MonomialCoefficient(cf,z2*z3);
+  cf3:=MonomialCoefficient(cf,z3^2);
+  
+  if cf2 ne 0 then
+    D := cf2^2 - 4*cf1*cf3;
+    fD := Factorization(Numerator(D));
+    for p in fD do
+      if Degree(p[1]) eq 6 then
+        ff := ClearDenominators(RR!(u^6*Evaluate(p[1],[s/u,t/u])));
+      end if;
+    end for;
+  end if;
+  return(<pi,ff>)
+end function;
 
 /* ----------------------------------------------------
 
@@ -174,7 +218,7 @@ XC[2];
 
 
 /* 
-In our case, in step 1, we found the following f 
+In our case, we found the following f 
   x0*x1*y0^3 + x1^2*y0^3 + x0^2*y0*y1^2 + x1^2*y1^3;
 and the output of GiveQuartic(f) was of course:
 
@@ -186,5 +230,13 @@ The curve C inducing the involution is given on X by the equations:
     x*z^2 + z^3 + x*y*w + w^3,
     x*y^2 + x^2*z + x*z^2 + y*w^2
 ] 
+
+The double cover is now given by the function DoubleCover
 */
 
+DC := DoubleCover(XC);
+
+"The surface X is a double cover of P2, with the covering map given by :;
+DC[1];
+"This map is ramified over the curve defined by: "
+DC[2];
