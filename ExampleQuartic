@@ -3,16 +3,11 @@ This code finds explicit polynomials that define the
 involution of the surface X given by the equation
  - x^3w - x^2zw + x^2w^2 - xy^3 + xz^3 - y^2w^2 + z^4 + zw^3 = 0.
 
-The code uses the Riemann-Roch space of 9H-5D where H is a 
-hyperplanesection and D is the twisted cubic curve. 
-The divisor 9H-5D is linearly equivalent to the divisor -H+5C 
-where C denotes the special curve of genus 2 and degree 5 on 
-this surface. 
+Moreover, we will calculate different models of the surface X
 */
 
 Q := RationalField();
-R<x,y,z,w> := PolynomialRing(Q,4);
-P3 := ProjectiveSpace(R);
+P3<x,y,z,w> := ProjectiveSpace(Q,4);
 
 // Quartic in P3
 h := -x*y^3 + x*z^3 + z^4 - x^3*w - x^2*z*w
@@ -34,15 +29,14 @@ D := Scheme(X,eqD);
 
 // Divisors 
 DivC := Divisor(X,C); 
-
-/* It seems like the divisor C is not working in magma,
-which is odd. We will work around this by using D. */
 DivD := Divisor(X,D);
 DivH := Divisor(X,w);
 
-// Basis of Riemann-Roch space of 9H-5D
+assert IsLinearlyEquivalent(DivD,2*DivH-DivC);
+// Basis of Riemann-Roch space of -H+5C ~ 9H-5D
 LB := RiemannRochBasis(9*DivH-5*DivD);
 // N.b. takes some time to calculate: ~1min
+// Calculating RRB of -H+5C takes a bit longer
 
 /* 
 We search for a coordinate transformation such that the image
@@ -230,7 +224,7 @@ First define involution on model X2
 
 iX2 := map< X2 -> X2 | [x,y,z,-w]>;
 
-// Then take divisor C-5H
+// Then take divisor -H+5C
 E := (pires*iX2)(Scheme(X,w));
 
 // This divisor embeds X2 back to P3
