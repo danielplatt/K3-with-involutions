@@ -145,13 +145,18 @@ end function;
 
 /* ----------------------------------------------------
 
-function DoubleCover(XC);
+The function DoubleCover calculates the model of X found
+with the function GiveQuartic as a double cover of P2.
+It outputs the map and the equation of the branched curve.
+*/
+
+function DoubleCover(XC)
   Q := Rationals();
   K<a,b> := FunctionField(Q,2);
-  P2<s,t,u> := ProjectiveSpace(Q,2); 
-  
-  X := XC[1];
-  P3<x,y,z,w> := AmbientSpace(X);
+  P2<s,t,u> := ProjectiveSpace(Q,2);
+  RR := CoordinateRing(P2);
+  P3<x,y,z,w> := ProjectiveSpace(Q,3);
+  X := Scheme(P3,XC[1]);
   C := Scheme(P3,XC[2]);
   DivC := Divisor(X,C);
   LC := RiemannRochBasis(DivC);
@@ -185,7 +190,7 @@ function DoubleCover(XC);
       end if;
     end for;
   end if;
-  return(<pi,ff>)
+  return(<pi,ff>);
 end function;
 
 /* ----------------------------------------------------
