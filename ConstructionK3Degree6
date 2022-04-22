@@ -96,7 +96,7 @@ end while;
 X;
 "The curve C of genus 2 on X, inducing the involution, is given by: ";
 C;
-"The surface X is a double cover of P2, with the covering map given by :;
+"The surface X is a double cover of P2, with the covering map given by: ";
 pi;
 "This map is ramified over the curve defined by: ";
 f;
