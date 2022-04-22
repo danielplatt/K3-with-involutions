@@ -56,18 +56,19 @@ while rank ne 2 do
   DivC := Divisor(X,C);
   LC := RiemannRochBasis(DivC);
   assert IsCoercible(Q,LC[3]);
-  pi := map < X -> P2 | [LC[1],LC[2],1] >; // +
+  pi := map < X -> P2 | [LC[1],LC[2],LC[3]] >; // +
+  pieq := DefiningEquations(pi);
   B:=BaseScheme(pi);
   
   XK:=BaseChange(X,K);
   P4K<y0,y1,y2,y3,y4>:=AmbientSpace(XK);
-
-  n1:=Numerator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
-  n2:=Numerator(Evaluate(LC[2],[y0,y1,y2,y3,y4]));
-  d1:=Denominator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
-  d2:=Denominator(Evaluate(LC[2],[y0,y1,y2,y3,y4]));
-  eqF1:=n1-a*d1;
-  eqF2:=n2-b*d2;
+  
+  pe1 := Evaluate(pieq[1],[y0,y1,y2,y3,y4]);
+  pe2 := Evaluate(pieq[2],[y0,y1,y2,y3,y4]);
+  pe3 := Evaluate(pieq[3],[y0,y1,y2,y3,y4]);
+  
+  eqF1 := pe1-a*pe3;
+  eqF2 := pe2-b*pe3;
   pXF:= XK meet Scheme(P4K,[eqF1,eqF2]);
   XF:=Difference(pXF,Scheme(P4K,Equations(B)));
 
