@@ -1,8 +1,20 @@
 /* 
-explanation...
+This file finds examples of K3 surfaces of degree 6
+defined over the Rationals, with Picard number 2 and 
+a holomorphic involution. These examples are 
+constructed by generating a random curve of genus 2 
+in P(1,3,1) and embedding this via the Veronese 
+embedding in P4. There we look for an intersection
+of a cubic and a quadric containing this curve.
+If the resulting intersection is smooth it will be
+a K3 surface of degree 6 containing a genus 2 curve.
+This linear system of this curve gives a 2-1 cover 
+of the projective plane, inducing the holomorphic
+involution.
 */
 
-load Deg2K3RankUpperBound;
+load Deg2K3RankUpperBound; 
+// function to calculate Picard number
 
 if assigned k and assigned l then 
   assert k lt l;
@@ -10,36 +22,47 @@ else
   k := -10;
   l := 10;
 end if;
-
+// sets the boundaries of the random generator.
+// If one defines k and l, before loading this file,
+// one can adjust the bounds
 
 Q := Rationals();
 R<t> := PolynomialRing(Q);
 P4<x0,x1,x2,x3,x4> := ProjectiveSpace(Q,4);
 P2<x,y,z> := ProjectiveSpace(Q,2);
 RR:=CoordinateRing(P2);
-K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2));
-rank := 22;
 
-while rank ne 2 do
+K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2)); 
+// will be used to find the branched curve..
+
+PicNr := 22;
+while PicNr ne 2 do 
+// as long as the surface we've found doesnt have Pic number 2,
+// we keep searching
+
+// First we find a smooth curve C of genus 2
   c:=[];
   flag := false;
-  while flag eq false do
+  while flag eq false do 
     for i in [1..5] do 
-      c[i] := Random([k..l]); // can be adjusted
+      c[i] := Random([k..l]); // this is what can be adjusted
     end for;
     eqpC := t^5+c[1]*t^4+c[2]*t^3+c[3]*t^2+c[4]*t+c[5];
     flag := IsSeparable(eqpC);
   end while;
 
+// Embed the curve in P4.
   pC := HyperellipticCurve(eqpC);
   WP2<xw,yw,zw> := AmbientSpace(pC);
   i := map < WP2 -> P4 | [xw^3, xw^2*zw, xw*zw^2, zw^3, yw] >;
   C := i(pC);
   eqC := Equations(C);
+  
+// Finding a smooth intersection X of a cubic and a quadric 
+// in P4 with the curve C on it. This will be the K3 surface.
   L3 := LinearSystem(P4,3);
   L3C := LinearSystem(L3,C);
   Sec := Sections(L3C);
-
   flag:=0;
   while flag eq 0 do
     eqs1:=Random(CartesianPower([eqC[i] : i in [1..4]],2));
@@ -53,42 +76,62 @@ while rank ne 2 do
   end while;
   assert C subset X;
 
+// Defining the double cover map pi
   DivC := Divisor(X,C);
   LC := RiemannRochBasis(DivC);
-  assert IsCoercible(Q,LC[3]);
-  pi := map < X -> P2 | [LC[1],LC[2],LC[3]] >; // +
+  pi := map < X -> P2 | [LC[1],LC[2],LC[3]] >;
   pieq := DefiningEquations(pi);
-  B:=BaseScheme(pi);
+  B:=BaseScheme(pi); // this will be the part where the 
+                     // defining equations of pi are all 0.
   
+// Now we need to find the model as a double cover, i.e. we 
+// will search for branched curve in P2 of the double cover.
+// We will do this by searching for the inverse image of the
+// generic point (a:b:1) and solve for which points we only 
+// have one point in the inverse image. This is why we use
+// the field K:=Q(a,b).
+
   XK:=BaseChange(X,K);
   P4K<y0,y1,y2,y3,y4>:=AmbientSpace(XK);
-  
+
+// Defining equations of pi:
   pe1 := Evaluate(pieq[1],[y0,y1,y2,y3,y4]);
   pe2 := Evaluate(pieq[2],[y0,y1,y2,y3,y4]);
   pe3 := Evaluate(pieq[3],[y0,y1,y2,y3,y4]);
-  
+
+// equations which have to hold for the inverse
   eqF1 := pe1-a*pe3;
   eqF2 := pe2-b*pe3;
+// Inverse image of the generic point (a:b:1):
   pXF:= XK meet Scheme(P4K,[eqF1,eqF2]);
   XF:=Difference(pXF,Scheme(P4K,Equations(B)));
 
-  cf:=ClearDenominators(Equations(XF)[1]);
+
+  cf:=ClearDenominators(Equations(XF)[1]); // need to be adjusted
   cf1:=MonomialCoefficient(cf,y3^2); 
   cf2:=MonomialCoefficient(cf,y3*y4);
   cf3:=MonomialCoefficient(cf,y4^2);
   
-  if cf2 ne 0 then
-    D:=cf2^2-4*cf1*cf3;
+  if cf2 ne 0 then // if cf2=0 then the involution is induced by
+                   // a linear map and so the Picard number definitely
+                   // will not be 2. So we skip the below calculations
+                   // and search for a new curve and surface.
+    D:=cf2^2-4*cf1*cf3; // determinant of abc-formula, so this exactly 
+                        // tells where we have only one solution.
     fD:=Factorization(Numerator(D));
+// Now we can find the branched curve:
     for p in fD do
       if Degree(p[1]) eq 6 then
         f:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
       end if;
     end for;
+// Check Picard number:
     R:=Deg2K3RankUpperBound(f,20);
-    rank := R[1];
+    PicNr := R[1]; // if eq 2 the while loop stops..
   end if;
 end while;
+
+// Below is the output of the file
 
 "A K3 surface X of degree 6 is found with an involution and Picard rank 2: ";
 
