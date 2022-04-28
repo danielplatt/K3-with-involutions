@@ -112,7 +112,7 @@ while PicNr ne 2 do
 // gives us a quadric equation in y4, from which we can 
 // deduce where the curve is branched. This is what we do below:
   
-  for p in Equations do
+  for p in Equations(XF) do
     if Degree(p) eq 2 then
       cf:=ClearDenominators(eq);
       cf1:=MonomialCoefficient(cf,y3^2); 
