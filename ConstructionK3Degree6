@@ -8,9 +8,15 @@ embedding in P4. There we look for an intersection
 of a cubic and a quadric containing this curve.
 If the resulting intersection is smooth it will be
 a K3 surface of degree 6 containing a genus 2 curve.
-This linear system of this curve gives a 2-1 cover 
+The linear system of this curve gives a 2-1 cover 
 of the projective plane, inducing the holomorphic
 involution.
+
+The function can take quite a lot of time, because it 
+uses the time consuming function Deg2K3RankUpperBound. 
+This is needed to check if the surface has Picard rank 2. 
+If not, the process starts again so if we are unlucky 
+it can take more than one hour...
 */
 
 load Deg2K3RankUpperBound; 
@@ -99,7 +105,7 @@ while PicNr ne 2 do
   pe2 := Evaluate(pieq[2],[y0,y1,y2,y3,y4]);
   pe3 := Evaluate(pieq[3],[y0,y1,y2,y3,y4]);
 
-// equations which have to hold for the inverse
+// equations which have to hold for the inverse image
   eqF1 := pe1-a*pe3;
   eqF2 := pe2-b*pe3;
 // Inverse image of the generic point (a:b:1):
@@ -140,7 +146,7 @@ while PicNr ne 2 do
   end if;
 end while;
 
-// Below is the output of the file
+// Below is the output of the file:
 
 "A K3 surface X of degree 6 is found with an involution and Picard rank 2: ";
 
