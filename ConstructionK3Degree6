@@ -105,12 +105,21 @@ while PicNr ne 2 do
 // Inverse image of the generic point (a:b:1):
   pXF:= XK meet Scheme(P4K,[eqF1,eqF2]);
   XF:=Difference(pXF,Scheme(P4K,Equations(B)));
-
-
-  cf:=ClearDenominators(Equations(XF)[1]); // need to be adjusted
-  cf1:=MonomialCoefficient(cf,y3^2); 
-  cf2:=MonomialCoefficient(cf,y3*y4);
-  cf3:=MonomialCoefficient(cf,y4^2);
+// Note that this defines a zero dimensional scheme
+// with two points over the field K. 
+// In particular, one can check that the equations of pi
+// only depend on the first coordinates and hence magma 
+// gives us a quadric equation in y4, from which we can 
+// deduce where the curve is branched. This is what we do below:
+  
+  for p in Equations do
+    if Degree(p) eq 2 then
+      cf:=ClearDenominators(eq);
+      cf1:=MonomialCoefficient(cf,y3^2); 
+      cf2:=MonomialCoefficient(cf,y3*y4);
+      cf3:=MonomialCoefficient(cf,y4^2);
+    end if;
+  end for;
   
   if cf2 ne 0 then // if cf2=0 then the involution is induced by
                    // a linear map and so the Picard number definitely
