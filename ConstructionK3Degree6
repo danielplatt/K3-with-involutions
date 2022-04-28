@@ -114,13 +114,13 @@ while PicNr ne 2 do
   
   for p in Equations(XF) do
     if Degree(p) eq 2 then
-      cf:=ClearDenominators(eq);
-      cf1:=MonomialCoefficient(cf,y3^2); 
-      cf2:=MonomialCoefficient(cf,y3*y4);
-      cf3:=MonomialCoefficient(cf,y4^2);
+      cf:=ClearDenominators(p);
     end if;
   end for;
-  
+  cf1:=MonomialCoefficient(cf,y3^2); 
+  cf2:=MonomialCoefficient(cf,y3*y4);
+  cf3:=MonomialCoefficient(cf,y4^2);
+    
   if cf2 ne 0 then // if cf2=0 then the involution is induced by
                    // a linear map and so the Picard number definitely
                    // will not be 2. So we skip the below calculations
