@@ -42,7 +42,7 @@ The code of `ConstructionQuartic2` is an alternative which has the same output a
 
 ### `ExampleQuartic`
 
-Run the code `ExampleQuartic` to get the equation of the involution on the quartic which is defined in the article. It also computes the model as double cover of P^2 and the model viewed as an intersection of an intersection of three quadrics.
+Run the code `ExampleQuartic` to get the equation of the involution on the quartic which is defined in the article. It also computes the model as double cover of P^2 and the model as the intersection of three quadrics.
 
 ### `ConstructionK3Degree6`
 
