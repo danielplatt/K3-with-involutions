@@ -36,7 +36,7 @@ the function returns all the primes p up to B such that the
 reduction of C mod p is smooth */
 
 
-function PrimesGoodReduction(f,B)
+function Primes(f,B)
   IP2<x,y,z>:=ProjectivePlane(Rationals());
   C:=Curve(IP2, Evaluate(f,[x,y,z]));
   assert IsNonsingular(C);
@@ -47,7 +47,7 @@ function PrimesGoodReduction(f,B)
   gps:=[];
   for p in ps do
     Cp:=Reduction(C,p);
-    if IsNonsingular(Cp) then
+    if not IsReduced(Cp) then
       Append(~gps,p);
     end if;
   end for;
@@ -98,7 +98,7 @@ WeilPolynomialOfDegree2K3Surface
 
 
 function Deg2K3RankUpperBound(f,B)
-  ps:=PrimesGoodReduction(f,B);
+  ps:=Primes(f,B);
   R<u>:=PolynomialRing(Rationals());
   p:=ps[1];
   resp:=Deg2PicNumberModp(f,p);
