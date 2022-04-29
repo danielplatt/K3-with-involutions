@@ -1,5 +1,6 @@
 /*
-(add explanation about function IsCyclotomic...)
+This function checks whether an irreducible polynomial of
+degree at most 22 is cyclotomic or not
 */
 
 function IsCyclotomic(f)
@@ -89,7 +90,7 @@ end function;
 
 Given a homogeneous polynomial f of degree 6, and let X be 
 the degree 2 K3 surface define by w^2=f.
-The function returns an upper bound for  X using van Luijk's 
+The function returns an upper bound for X using van Luijk's 
 method for all primes of good reductions of X up to B.
 It can take long. The bottleneck is the function 
 WeilPolynomialOfDegree2K3Surface 
@@ -97,8 +98,7 @@ WeilPolynomialOfDegree2K3Surface
 
 
 function Deg2K3RankUpperBound(f,B)
-  ps:=Remove(PrimesUpTo(B),1);
-  Remove(~ps,1);
+  ps:=PrimesGoodReduction(f,B);
   R<u>:=PolynomialRing(Rationals());
   p:=ps[1];
   resp:=Deg2PicNumberModp(f,p);
