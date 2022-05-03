@@ -17,12 +17,12 @@ This code computes the Picard number of the double cover of P^2, branched over t
     -4*x^3*y*z^2-6*x^2*y^2*z^2-7*x*y^3*z^2+5*x^2*y*z^3+5*x*y^2*z^3
     -8*y^3*z^3-6*x^2*z^4+5*x*y*z^4+8*y^2*z^4+7*x*z^5-2*y*z^5+z^6`.
 This is Example 3.4 from the article.
-The program computes the Picard number of the reductions of the K3 surface of primes up to 50. The result of this computation give that modulo 5 and modulo 13 gives upperbound 2. Because the values of the ArtinTateFormule do not not differ by a square, this gives an upper bound of 1 for Picard rank of the original complex K3.
+The program computes the Picard number of the reductions of the K3 surface of primes up to 50. The result of this computation give that modulo 5 and modulo 13 gives the upper bound 2. Because the values of the ArtinTateFormule do not not differ by a square, this gives an upper bound of 1 for Picard rank of the original complex K3.
 As the Picard number of every algebraic K3 is at least 1, this shows that the Picard number of this surface is equal to 1.
 
 ### `ExampleNodalK3`
 
-This code computes the Picard number of the blowup of the nodal K3 defined by the equation f4+f3*w+f2*w^2=0 as a subset of P^3, where 
+This code computes the Picard number of the blowup of the nodal K3 defined by the equation `f4+f3*w+f2*w^2=0` as a subset of P^3, where 
 `f2:=3*x^2+9*x*y+9*y^2+7*x*z+8*y*z+8*z^2`,
 `f3:=-8*x^3+8*x^2*y-8*x*y^2-5*y^3-9*x^2*z-x*y*z-6*y^2*z+5*x*z^2-9*y*z^2-7*z^3`,
 `f4:=-5*x^4+5*x^3*y+4*x^2*y^2+x*y^3-4*x^3*z+8*x^2*y*z-8*x*y^2*z+7*y^3*z+

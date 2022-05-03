@@ -4,8 +4,8 @@ defined over the Rationals, with Picard number 2 and a
 holomorphic involution. These examples are constructed
 by generating a random curve of genus 2 in P1xP1 and 
 embedding this via the Segre embedding in P3. There 
-we look for a quatric surface containing this curve.
-If the quatric surface is smooth it will be K3 surface 
+we look for a quartic surface containing this curve.
+If the quartic surface is smooth it will be a K3 surface
 containing a genus 2 curve. The linear system of this 
 curve gives a 2-1 cover of the projective plane, 
 inducing the holomorphic involution.
@@ -50,7 +50,7 @@ while PicNr ne 2 do
 // we keep searching
   asrt := false;
   
-// Defining a curve of genus 2 and searching for a quatric that
+// Defining a curve of genus 2 and searching for a quartic that
 // contains this curve:
   while asrt ne true do
     for i in [1..12] do
@@ -68,7 +68,7 @@ while PicNr ne 2 do
       CD:=Scheme(P1xP1,f*g); // Union of curves defined by f and g. 
       CDim:=SegreEmbedding(CD); 
       /* This curve CD embeds in a quartic surface which is given by one of 
-         the defining equations. Apperently it is the second one... */
+         the defining equations. Apparently it is the second one... */
       
       h:=DefiningEquations(CDim)[2];
       X:=Scheme(P3,h); // quartic surface
