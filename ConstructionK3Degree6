@@ -39,7 +39,7 @@ P2<x,y,z> := ProjectiveSpace(Q,2);
 RR:=CoordinateRing(P2);
 
 K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2)); 
-// will be used to find the branched curve..
+// will be used to find the branched curve
 
 PicNr := 22;
 while PicNr ne 2 do 
@@ -142,7 +142,7 @@ while PicNr ne 2 do
     end for;
 // Check Picard number:
     R:=Deg2K3RankUpperBound(f,20);
-    PicNr := R[1]; // if eq 2 the while loop stops..
+    PicNr := R[1]; // if eq 2 the while loop stops.
   end if;
 end while;
 
@@ -158,3 +158,30 @@ C;
 pi;
 "This map is ramified over the curve defined by: ";
 f;
+
+/* Output example
+A K3 surface X of degree 6 is found with an involution and Picard rank 2:
+The K3 surface X is given by:
+Scheme over Rational Field defined by
+x0*x1 - 8*x1^2 + 7*x1*x2 + 9*x2^2 + x1*x3 + 7*x2*x3 - x3^2 - x4^2,
+x0^2*x2 - 390*x0*x2*x3 + 486*x0*x3^2 + 625*x1*x3^2 + 391*x2*x3^2 - 57*x3^3 + x2^2*x4 - x1*x3*x4 - x1*x4^2 - 8*x2*x4^2 - 57*x3*x4^2
+The curve C of genus 2 on X, inducing the involution, is given by:
+Curve over Rational Field defined by
+-x2^2 + x1*x3,
+-x1*x2 + x0*x3,
+-x1^2 + x0*x2,
+x0*x1 - 8*x1^2 + 7*x1*x2 + 10*x2^2 + 7*x2*x3 - x3^2 - x4^2,
+x1^3 - 57*x1*x2^2 + 66*x2^3 + 87*x2^2*x3 + 55*x2*x3^2 - 8*x3^3 - x2*x4^2 - 8*x3*x4^2,
+x1^2*x2 - 8*x1*x2^2 + 7*x2^3 + 10*x2^2*x3 + 7*x2*x3^2 - x3^3 - x3*x4^2
+The surface X is a double cover of P2, with the covering map given by:
+Mapping from: Sch: X to Prj: P2
+with equations :
+x0*x2 - 7*x2^2 - 3599/8*x2*x3 + 3887/8*x3^2 - 1/8*x4^2
+x1*x2 + 25/4*x2^2 - 479/64*x2*x3 - 1/64*x3^2 - 1/64*x4^2
+-x2^2 + x1*x3
+This map is ramified over the curve defined by:
+4*x^6 + 1600*x^5*y - 231680*x^4*y^2 + 13688832*x^3*y^3 + 288866304*x^2*y^4 - 2514223104*x*y^5 - 4486856704*y^6 - 2828*x^5*z + 576736*x^4*y*z + 185713152*x^3*y^2*z +
+    2018471936*x^2*y^3*z - 47131115520*x*y^4*z - 94301192192*y^5*z + 9092488*x^4*z^2 + 509656576*x^3*y*z^2 - 11616787456*x^2*y^2*z^2 - 240652976128*x*y^3*z^2 -
+    662759112704*y^4*z^2 - 1565048828*x^3*z^3 - 65878023264*x^2*y*z^3 + 51155657472*x*y^2*z^3 - 1567455184896*y^3*z^3 + 85992454907*x^2*z^4 + 1784619134672*x*y*z^4 +
+    164908661440*y^2*z^4 - 1501369547776*x*z^5 + 1667026067456*y*z^5 - 967458816*z^6
+*/
