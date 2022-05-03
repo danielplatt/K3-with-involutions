@@ -1,5 +1,9 @@
 /*
-(add explanation about function IsCyclotomic...)
+The function checks whether a polynomial of degree at most 22 is cyclotomic.
+
+The degree is important, because the test is tailored to this degree. In fact the n-th Cyclotomic Polynomial has degree d=phi(n), where phi() is Euler's totient function.
+Using the lower bounds for phi(), you can prove that if n>=210 then phi(n)>=48, so we know that n<=210.
+Looking at the ratio n/phi(n) for all the n<210 such that phi(n)<=22, you get that this ratio is at most 15/4, from which it follows that n<4*phi(n)=4d, the bound used in the test.
 */
 
 function IsCyclotomic(f)
