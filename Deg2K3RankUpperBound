@@ -1,3 +1,9 @@
+/* 
+This file contains version 1.2 of Dino Festis code: "Van Luijk method for degree 2 K3 surfaces".
+The most recent version can be found on the website:
+https://sites.google.com/view/dinofesti/documents
+*/
+
 /*
 The function checks whether a polynomial of degree at most 22 is cyclotomic.
 
@@ -31,12 +37,7 @@ function IsCyclotomic(f)
 end function;
 
 
-
-/* -------------------------------------------------------
-
-Given a homogeneous polynomial f defining a smooth curve C,
-the function returns all the primes p up to B such that the 
-reduction of C mod p is smooth */
+/* Given a homogeneous polynomial f defining a smooth curve C, the function returns all the primes p up to B such that the reduction of C mod p is smooth */
 
 
 function PrimesGoodReduction(f,B)
@@ -59,21 +60,22 @@ end function;
 
 
 
-/* ---------------------------------------------------------
-
-Given a prime p and a  homogeneous polynomial f with integral 
-coefficients defining a smooth sextic curve over IF_p, the 
-function below returns the geometric Picard number of the K3 
-surface S:w^2=f defined over IF_p; it also returns the 
-discriminant of the geometric Picard lattice of S up to squares 
-*/
+/* Given a prime p and a  homogeneous polynomial f with integral coefficients defining a smooth sextic curve over IF_p, the function below returns the geometric Picard number of the K3 surface S:w^2=f defined over IF_p; it also returns the discriminant of the geometric Picard lattice of S up to squares */
 
 function Deg2PicNumberModp(f,p)
   Rp<x,y,z>:=PolynomialRing(GF(p),3);
   fp:=Rp!Evaluate(f,[x,y,z]);
   assert IsHomogeneous(f);
+  IP2p:=ProjectiveSpace(Rp);
+  Bp:=Curve(IP2p,fp);
+  if not IsReduced(Bp) then
+    return(<0,0,0>);
+  end if;
   R<u>:=PolynomialRing(Rationals());
   wp,wpsing:=WeilPolynomialOfDegree2K3Surface(fp);
+  if wpsing eq 0 then
+    return(<0,0,0>);
+  end if;
   wp:=R!wp;
   fwp:=Factorization(wp);
   ufwp:=[Evaluate(f[1],p*u)/(p^(Degree(f[1]))) : f in fwp];
@@ -89,36 +91,40 @@ function Deg2PicNumberModp(f,p)
 end function;
 
 
-/* ---------------------------------------------------------
 
-Given a homogeneous polynomial f of degree 6, and let X be 
-the degree 2 K3 surface define by w^2=f.
-The function returns an upper bound for  X using van Luijk's 
-method for all primes of good reductions of X up to B.
-It can take long. The bottleneck is the function 
-WeilPolynomialOfDegree2K3Surface 
-*/ 
+/* Given a homogeneous polynomial f of degree 6, and let X be the degree 2 K3 surface define by w^2=f.
+The function returns an upper bound for  X using van Luijk's method for all primes of good reductions of X up to B.
+It can take long. The bottleneck is the function WeilPolynomialOfDegree2K3Surface */ 
 
 
 function Deg2K3RankUpperBound(f,B)
   ps:=Remove(PrimesUpTo(B),1);
   Remove(~ps,1);
   R<u>:=PolynomialRing(Rationals());
-  p:=ps[1];
-  resp:=Deg2PicNumberModp(f,p);
+  resp:=<0,0,0>;
+  while resp eq <0,0,0> do
+    p:=ps[1];
+    resp:=Deg2PicNumberModp(f,p);
+    Remove(~ps,1);
+    if ps eq [] then
+      return(resp);
+    end if;
+  end while;
   rp:=resp[1];rsingp:=resp[2];dp:=resp[3];
   rhop:=rp+rsingp;
-  Remove(~ps,1);
   for p1 in ps do
     resp1:=Deg2PicNumberModp(f,p1);
-    rp1:=resp1[1];rsingp1:=resp1[2];dp1:=resp1[3];
-    rhop1:=rp1+rsingp1;
-    if rhop1 lt rhop then
-      rhop:=rhop1; dp:=dp1; p:=p1;
-    end if;
-    if rhop1 eq rhop and dp1 ne dp then
-      return <rhop-1, <p, rhop, dp>, <p1, rhop1, dp1>>;
+    if resp1 ne <0,0,0> then
+      rp1:=resp1[1];rsingp1:=resp1[2];dp1:=resp1[3];
+      rhop1:=rp1+rsingp1;
+      if rhop1 lt rhop then
+        rhop:=rhop1; dp:=dp1; p:=p1;
+      end if;
+      if rhop1 eq rhop and dp1 ne dp then
+        return <rhop-1, <p, rhop, dp>, <p1, rhop1, dp1>>;
+      end if;
     end if;
   end for;
   return <rhop,<p, rhop, dp>>;
 end function;
+
