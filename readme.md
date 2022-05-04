@@ -38,7 +38,6 @@ Use the code `ConstructionQuartic` to generate random quartic surfaces with Pica
 (It is shown in the article that this implies that the quartic surface has Picard number *equal* to 2.)
 It also gives back the model as a double cover. The function can take quite some time to find an example. 
 
-The code of `ConstructionQuartic2` is an alternative which has the same output as the original function. The difference is that it only checks the upperbound for the reduction mod 2. While it omits more surfaces by checking only the reduction mod 2, the upside is that the code is way faster!
 
 ### `ExampleQuartic`
 
