@@ -14,6 +14,23 @@ h := -x*y^3 + x*z^3 + z^4 - x^3*w - x^2*z*w
         + x^2*w^2 - y^2*w^2 + z*w^3;
 X := Scheme(P3,h); 
 
+// Counting points on reduction mod p=2 
+p := 2;
+list := [];
+for k in [1..10] do 
+  P3p := ProjectiveSpace(GF(p^k),3);
+  Xp := Scheme(P3p,h);
+  pts := #Points(Xp);
+  Append(~list,pts-1-p^(2*k)); //list Frobenius traces
+end for;
+
+// Calculating Weil polynomail and show that rho(X)=2
+R<t> := PolynomialRing(Rationals());
+wp := FrobeniusTracesToWeilPolynomials(list, p, 2, 22: KnownFactor := t-p);
+assert #wp eq 1;
+assert WeilPolynomialToRankBound(wp[1], 2) eq 2;
+
+
 // Curve C on X
 eqC:= [-y*z + x*w,
     x*z^2 + z^3 + x*y*w + w^3,
