@@ -22,6 +22,7 @@ pC := HyperellipticCurve(eqpC);
 WP2<xw,yw,zw> := AmbientSpace(pC);
 i := map < WP2 -> P4 | [xw^3, xw^2*zw, xw*zw^2, zw^3, yw] >;
 C := i(pC);
+assert C subset X;
 
 // Double cover:
 DivC := Divisor(X,C);
