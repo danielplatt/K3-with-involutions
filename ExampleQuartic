@@ -18,14 +18,15 @@ X := Scheme(P3,h);
 eqC:= [-y*z + x*w,
     x*z^2 + z^3 + x*y*w + w^3,
     x*y^2 + x^2*z + x*z^2 + y*w^2];
-C := Scheme(X,eqC);
+C := Scheme(P3,eqC);
+assert C subset X;
 
 // Curve D on X
 eqD := [-y*z + x*w,
     y^2 - z*w,
     x*y - z^2];
-D := Scheme(X,eqD);
-
+D := Scheme(P3,eqD);
+assert D subset X;
 
 // Divisors 
 DivC := Divisor(X,C); 
