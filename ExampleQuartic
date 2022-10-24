@@ -310,7 +310,7 @@ assert X8 eq X8p;
 
 "Model as intersection of quadrics: ";
 X8; // model in P5
-assert chi(D) eq Scheme(P5,[x1,x2,x4,x5]); // streched twisted cubic curve
+assert chi(Scheme(X,eqD)) eq Scheme(P5,[x1,x2,x4,x5]); // streched twisted cubic curve
 
 reschi := map < X -> X8 | LHD >;
 chiinv := IsInvertible(reschi);
