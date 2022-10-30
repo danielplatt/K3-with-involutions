@@ -1,6 +1,6 @@
 # quartic-k3-with-involution
 ## What is this?
-In this repository we provide the code that was used in the writing of the article *D. Festi, W. Nijgh, D. Platt: K3 surfaces with two involutions and low Picard number*.
+In this repository we provide the code that was used in the writing of the article [D. Festi, W. Nijgh, D. Platt: K3 surfaces with two involutions and low Picard number](https://arxiv.org/abs/2210.14623).
 The article exhibits examples of K3 surfaces with two involutions and Picard number 2, which is the lowest Picard number possible for a K3 surface that is not a double cover of P^2 branched over a sextic.
 All code is written in [Magma (link)](magma.maths.usyd.edu.au).
 
