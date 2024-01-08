@@ -51,7 +51,7 @@ repeat
         h := Random(L)*g + Random(L)*g1 + Random(L)*g2;
         X := Scheme(P3,h);
       until IsNonsingular(X);              
-      Z := Intersection(X,Y);
+      Z := Scheme(X,g);
     until #IrreducibleComponents(Z) eq 2;
     C := Z[1];
   until IsNonsingular(C);
