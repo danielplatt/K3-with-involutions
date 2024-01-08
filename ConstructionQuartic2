@@ -53,7 +53,7 @@ repeat
       until IsNonsingular(X);              
       Z := Scheme(X,g);
     until #IrreducibleComponents(Z) eq 2;
-    C := Z[1];
+    C := IrreducibleComponents(Z)[1];
   until IsNonsingular(C);
 
 // Then we define the double cover map pi
