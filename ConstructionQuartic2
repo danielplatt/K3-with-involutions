@@ -33,11 +33,17 @@ RR:=CoordinateRing(P2);
 K<a,b>:=FieldOfFractions(PolynomialRing(Q,2));
 // will be used to find the branched curve..
 
+g:=x*w-y*z;
+g1:=x*y-z^2;
+g2:=y^2-z*w;
+// the equations of the twisted cubic curve
+
+repeat
 // as long as the surface we've found doesnt have Pic number 2,
 // we keep searching
-repeat
 
-// Looking for a smooth quartic surface with an 
+
+// First we look for a smooth quartic surface with an 
 // irreducible smooth curve of genus 2
   repeat
     repeat
@@ -50,7 +56,7 @@ repeat
     C := Z[1];
   until IsNonsingular(C);
 
-// Defining the double cover map pi
+// Then we define the double cover map pi
   DivC := Divisor(X,C);
   LC := RiemannRochBasis(DivC);
   pi := map < X -> P2 | [LC[1],LC[2],LC[3]] >;
@@ -64,7 +70,6 @@ repeat
 // generic point (a:b:1) and solve for which points we only 
 // have one point in the inverse image. This is why we use
 // the field K:=Q(a,b).
-
   XK:=BaseChange(X,K);
   P3K<z0,z1,z2,z3>:=AmbientSpace(XK);
 
