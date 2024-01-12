@@ -32,9 +32,9 @@ In the article, the blowup of the nodal quartic is recognised as the double cove
 The program computes the Picard number of the reductions of the K3 surface modulo 5 and it is found that this rank is 2, which gives an upper bound for the Picard number.
 We also have a lower bound 2, because the exceptional divisor and the hyperplane section are independent divisors, so the Picard number of this K3 surface is equal to 2.
 
-### `ConstructionQuartic`
+### `ConstructionQuartic` and `ConstructionQuartic2` 
 
-Use the code `ConstructionQuartic` to generate random quartic surfaces with Picard number at most 2 and an involution coming from a curve C of genus 2 and degree 5. 
+Use the code in either file to generate random quartic surfaces with Picard number at most 2 and an involution coming from a curve C of genus 2 and degree 5. 
 (It is shown in the article that this implies that the quartic surface has Picard number *equal* to 2.)
 It also gives back the model as a double cover. The function can take quite some time to find an example. 
 
