@@ -50,7 +50,7 @@ repeat
 // in P4 with the curve C on it. This will be the K3 surface.
   repeat
     repeat
-      pf := Random(L2) + Random(L2) + Random(L2);
+      pf := Random(L2) + Random(L2) + Random(L2) + Random(L2);
       f := Evaluate(pf,[x0,x1,x2,x3,0]);
       l1 := Random(L1) + Random(L1);
       l2 := Random(L1) + Random(L1);
@@ -61,7 +61,6 @@ repeat
     until IsNonsingular(X) and Dimension(X) eq 2;
     C:=Scheme(P4,[eq2,g1,g2,g3]);
   until IsNonsingular(C);
-  C;
 
 // Defining the double cover map pi
   DivC := Divisor(X,C);
