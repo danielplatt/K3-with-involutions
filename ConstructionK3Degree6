@@ -1,0 +1,149 @@
+/* 
+This file finds examples of K3 surfaces of degree 6
+defined over the Rationals, with Picard number 2 and 
+a holomorphic involution. These examples are 
+constructed ...
+
+The function can take quite a lot of time, because it 
+uses the time consuming function Deg2K3RankUpperBound. 
+This is needed to check if the surface has Picard rank 2. 
+If not, the process starts again so if we are unlucky 
+it can take more than one hour...
+*/
+
+load Deg2K3RankUpperBound; 
+// function to calculate Picard number
+
+
+Q := Rationals();
+R<t> := PolynomialRing(Q);
+P4<x0,x1,x2,x3,x4> := ProjectiveSpace(Q,4);
+P2<x,y,z> := ProjectiveSpace(Q,2);
+RR:=CoordinateRing(P2);
+
+L1 := LinearSystem(P4,1);
+g1 := x0*x3 - x1*x2;
+g2 := x0*x2 - x1^2;
+g3 := x1*x3 - x2^2;
+
+L2 := LinearSystem(P4,2);
+
+K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2)); 
+// will be used to find the branched curve
+
+
+repeat
+// as long as the surface we've found doesnt have Pic number 2,
+// we keep searching
+  
+// Finding a smooth intersection X of a cubic and a quadric 
+// in P4 with the curve C on it. This will be the K3 surface.
+  repeat
+    repeat
+      pf := Random(L2) + Random(L2) + Random(L2);
+      f := Evaluate(pf,[x0,x1,x2,x3,0]);
+      l1 := Random(L1) + Random(L1);
+      l2 := Random(L1) + Random(L1);
+      l3 := Random(L1) + Random(L1);
+      eq1:= l1*g1+l2*g2+l3*g3;
+      eq2:= x4^2-f;
+      X := Scheme(P4,[eq1,eq2]);
+    until IsNonsingular(X) and Dimension(X) eq 2;
+    C:=Scheme(P4,[eq2,g1,g2,g3]);
+  until IsNonsingular(C);
+  C;
+
+// Defining the double cover map pi
+  DivC := Divisor(X,C);
+  LC := RiemannRochBasis(DivC);
+  pi := map < X -> P2 | [LC[1],LC[2],LC[3]] >;
+  pieq := DefiningEquations(pi);
+  B:=BaseScheme(pi); // this will be the part where the 
+                     // defining equations of pi are all 0.
+  
+// Now we need to find the model as a double cover, i.e. we 
+// will search for branched curve in P2 of the double cover.
+// We will do this by searching for the inverse image of the
+// generic point (a:b:1) and solve for which points we only 
+// have one point in the inverse image. This is why we use
+// the field K:=Q(a,b).
+
+  XK:=BaseChange(X,K);
+  P4K<y0,y1,y2,y3,y4>:=AmbientSpace(XK);
+
+// Defining equations of pi:
+  pe1 := Evaluate(pieq[1],[y0,y1,y2,y3,y4]);
+  pe2 := Evaluate(pieq[2],[y0,y1,y2,y3,y4]);
+  pe3 := Evaluate(pieq[3],[y0,y1,y2,y3,y4]);
+
+// equations which have to hold for the inverse image
+  eqF1 := pe1-a*pe3;
+  eqF2 := pe2-b*pe3;
+// Inverse image of the generic point (a:b:1):
+  pXF:= XK meet Scheme(P4K,[eqF1,eqF2]);
+  XF:=Difference(pXF,Scheme(P4K,Equations(B)));
+// Note that this defines a zero dimensional scheme
+// with two points over the field K. 
+// In particular, one can check that the equations of pi
+// only depend on the first coordinates and hence magma 
+// gives us a quadric equation in y4, from which we can 
+// deduce where the curve is branched. This is what we do below:
+  
+  for p in Equations(XF) do
+    if Degree(p) eq 2 then
+      cf:=ClearDenominators(p);
+    end if;
+  end for;
+  cf1:=MonomialCoefficient(cf,y3^2); 
+  cf2:=MonomialCoefficient(cf,y3*y4);
+  cf3:=MonomialCoefficient(cf,y4^2);
+    
+  if cf2 ne 0 then // if cf2=0 then the involution is induced by
+                   // a linear map and so the Picard number definitely
+                   // will not be 2. So we skip the below calculations
+                   // and search for a new curve and surface.
+    D:=cf2^2-4*cf1*cf3; // determinant of abc-formula, so this exactly 
+                        // tells where we have only one solution.
+    fD:=Factorization(Numerator(D));
+// Now we can find the branched curve:
+    for p in fD do
+      if Degree(p[1]) eq 6 then
+        ff:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
+      end if;
+    end for;
+// Check Picard number:
+    ub:=Deg2K3RankUpperBound(ff,20);
+    PicNr := ub[1]; 
+  else
+    PicNr := 22;
+  end if;
+until PicNr eq 2; // if eq 2 the loop stops.
+
+// Below is the output of the file:
+
+"A K3 surface X of degree 6 is found with an involution and Picard rank 2: ";
+
+"The K3 surface X is given by: ";
+X;
+"The curve C of genus 2 on X, inducing the involution, is given by: ";
+C;
+"The surface X is a double cover of P2, with the covering map given by: ";
+pi;
+"This map is ramified over the curve defined by: ";
+ff;
+
+/* Output example
+A K3 surface X of degree 6 is found with an involution and Picard rank 2:
+The K3 surface X is given by:
+Scheme over Rational Field defined by
+
+The curve C of genus 2 on X, inducing the involution, is given by:
+Curve over Rational Field defined by
+
+The surface X is a double cover of P2, with the covering map given by:
+Mapping from: Sch: X to Prj: P2
+with equations :
+
+This map is ramified over the curve defined by:
+
+*/
