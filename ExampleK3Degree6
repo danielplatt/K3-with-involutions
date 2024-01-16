@@ -1,0 +1,89 @@
+
+Q := Rationals();
+R<t> := PolynomialRing(Q);
+P4<x0,x1,x2,x3,x4> := ProjectiveSpace(Q,4);
+P2<x,y,z> := ProjectiveSpace(Q,2);
+RR:=CoordinateRing(P2);
+K<a,b>:=FieldOfFractions(PolynomialRing(Rationals(),2));
+
+// Defining equations K3 surface X:
+g1 := x0*x3 - x1*x2;
+g2 := x0*x2 - x1^2;
+g3 := x1*x3 - x2^2;
+f := 2*x0^2 + x1^2 + x0*x2 + x1*x2 + x2^2 
+      + x1*x3 + 2*x2*x3 + x3^2;
+eqX1 := (2*x0 + x1 + x2 + x4) * g1 
+      + (x3 + x4) * g2p
+      + (x1 + 2*x2 + 2*x3 + x4) * g3;
+eqX2 := x4^2-f;
+X := Scheme(P4,[eqX1,eqX2]);
+assert IsNonSingular(X) eq true;
+
+"The K3 surface is given by ";
+X;
+
+// Defining curve C on X given by the embedding of a hyperelliptic curve
+C:= Scheme(P4,[g1,g2,g3,eqX2]);
+assert IsNonSingular(C) eq true;
+
+// Double cover:
+DivC := Divisor(X,C);
+LC := RiemannRochBasis(DivC);
+pi := map < X -> P2 | [LC[1],LC[2],1] >;
+
+// Subscheme X where pi is not defined
+B:=BaseScheme(pi); 
+
+// Calculating branched curve in P2, it is given by f:
+XK:=BaseChange(X,K);
+P4K<y0,y1,y2,y3,y4>:=AmbientSpace(XK);
+n1:=Numerator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
+n2:=Numerator(Evaluate(LC[2],[y0,y1,y2,y3,y4]));
+d1:=Denominator(Evaluate(LC[1],[y0,y1,y2,y3,y4]));
+d2:=Denominator(Evaluate(LC[2],[y0,y1,y2,y3,y4]));
+eqF1:=n1-a*d1;
+eqF2:=n2-b*d2;
+pXF:= XK meet Scheme(P4K,[eqF1,eqF2]);
+XF:=Difference(pXF,Scheme(P4K,Equations(B)));
+
+cf:=ClearDenominators(Equations(XF)[1]);
+cf1:=MonomialCoefficient(cf,y3^2); 
+cf2:=MonomialCoefficient(cf,y3*y4);
+cf3:=MonomialCoefficient(cf,y4^2);
+assert cf2 ne 0;
+
+D:=cf2^2-4*cf1*cf3;
+fD:=Factorization(Numerator(D));
+for p in fD do
+  if Degree(p[1]) eq 6 then
+    f:=ClearDenominators(RR!(z^6*Evaluate(p[1],[x/z,y/z])));
+  end if;
+end for;
+"Model as double cover is given by w^2=f(x,y,z) with f equal to ";
+f;
+
+// Showing that the Picard number is 2 (again it takes quite some time):
+R7 := PolynomialRing(GF(7),3);
+f7 := R7!f;
+W7 := WeilPolynomialOfDegree2K3Surface(f7);
+"Picard number of X is ";
+WeilPolynomialToRankBound(W7,7); // rank is 2
+
+/* ----------------------------------------------------------------------
+Output:
+
+The K3 surface is given by
+Scheme over Rational Field defined by
+-2*x0*x1*x2 - x1^2*x2 - 2*x1*x2^2 - 2*x2^3 + 2*x0^2*x3 + x0*x1*x3 + 2*x0*x2*x3 + 
+    2*x1*x2*x3 - 2*x2^2*x3 + 2*x1*x3^2 - x1^2*x4 + x0*x2*x4 - x1*x2*x4 - x2^2*x4 + 
+    x0*x3*x4 + x1*x3*x4,
+-2*x0^2 - x1^2 - x0*x2 - x1*x2 - x2^2 - x1*x3 - 2*x2*x3 - x3^2 + x4^2
+Model as double cover is given by w^2=f(x,y,z) with f equal to 
+512*x^6 + 512*x^4*y^2 + 256*x^3*y^3 + 512*x^2*y^4 + 512*x*y^5 + 256*y^6 + 768*x^5*z
+    - 896*x^4*y*z - 768*x^3*y^2*z - 384*x^2*y^3*z + 256*x*y^4*z + 512*y^5*z + 
+    336*x^4*z^2 - 1440*x^3*y*z^2 - 1552*x^2*y^2*z^2 + 224*x*y^3*z^2 + 400*y^4*z^2 -
+    64*x^3*z^3 - 864*x^2*y*z^3 - 512*x*y^2*z^3 + 320*y^3*z^3 - 40*x^2*z^4 + 
+    104*x*y*z^4 + 104*y^2*z^4 + 72*x*z^5 + 192*y*z^5 + 37*z^6
+Picard number of X is 
+2
+*/
