@@ -2,7 +2,17 @@
 This file finds examples of K3 surfaces of degree 6
 defined over the Rationals, with Picard number 2 and 
 a holomorphic involution. These examples are 
-constructed ...
+constructed by defining the surface X over Q 
+by the equations l1*g1+l2*g2+l3*g3=0 and x4^2=f, where
+  g1=x0x3-x1x2;
+  g2=x0x2-x1^2;
+  g3=x1x3-x2^2;
+  li are random homogeneous polynomials of degree 1;
+  f is a random homogeneous polynomial of degree 2.
+This surface contains the curve C defined by g1=g2=g3=0
+and x4^2=f. If X is smooth then it defines a K3. 
+The holomorphic involution on X is induced by the double 
+cover model given by the linear system of the curve C. 
 
 The function can take quite a lot of time, because it 
 uses the time consuming function Deg2K3RankUpperBound. 
